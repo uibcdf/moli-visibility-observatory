@@ -19,6 +19,7 @@ ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:gene
 DEFAULT_MODEL = "gemini-3.1-flash-lite"
 PROTOCOL_VERSION = "concise-v2"
 OUTPUT_TOKENS = 4096
+REQUEST_TIMEOUT_SECONDS = 120
 
 def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_queries=1, start_index=0, opener=None, pause=None, context=None):
     if not key:
@@ -62,7 +63,7 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
             while True:
                 attempts += 1
                 try:
-                    with opener(request,timeout=60) as response:
+                    with opener(request,timeout=REQUEST_TIMEOUT_SECONDS) as response:
                         result=json.load(response)
                     break
                 except urllib.error.HTTPError as transient:
