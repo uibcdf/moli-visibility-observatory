@@ -70,3 +70,13 @@ python -m http.server --directory build/public-site 8000
 [First reviewed summary](data/baselines/2026-10-10-tavily-basic.summary.json) · [Tavily source run](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38040732355).
 
 **GitHub Pages setup:** Under **Settings → Pages → Build and deployment → Source**, select **GitHub Actions**. The workflow `Publish reviewed visibility summaries` is configured to deploy only the reviewed dashboard. If Pages is not enabled, the deploy action may fail; re-run it after enabling. Expected Pages location (once published): https://uibcdf.github.io/moli-visibility-observatory/ . No monthly API collection is enabled.
+
+## Gemini recommendation evaluation (opt-in; experimental)
+
+A **separate** Gemini agent-response track is now available. It captures unprompted tool recommendations under two declared conditions: `closed_book` (no external search) and `google_search` (Google Search grounding). Answers remain **unadjudicated**; they are **not** evaluated with web Presence@10 or MRR@10 and are excluded from the public reviewed web-search dashboard.
+
+Set `GEMINI_API_KEY` as an Actions repository secret, then manually run **Capture opt-in Gemini agent recommendations** with mode `closed_book` and **1** query first. Inspect the artifact and API usage before increasing to 5 or 20. Do not run `google_search` until confirming your Gemini API project/model is eligible for free grounding and has no billing risk. Default pinned identifier: `gemini-2.5-flash-lite`; availability and quotas may change. API subscription/billing is separate from Google AI Pro.
+
+Captured data include model, mode, UTC time, responses, usage and (for search mode) grounding metadata. This track is only the **data capture** foundation; independent recommendation scoring and a longitudinal agent dashboard have not been implemented. See [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing).
+
+No recurring runs or automatic Pages publication of agent responses are enabled.
