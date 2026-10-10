@@ -15,13 +15,15 @@ import urllib.request
 from visibility_observatory.__main__ import ROOT, load
 
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-DEFAULT_MODEL = "gemini-2.5-flash-lite"
+DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
 def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_queries=1, opener=None):
     if not key:
         raise ValueError("GEMINI_API_KEY missing: no requests will be made")
     if mode not in ("closed_book", "google_search"):
         raise ValueError("Invalid evaluation mode")
+    if mode == "google_search":
+        raise ValueError("Google Search grounding is disabled pending explicit paid-tier and billing review")
     if not 1 <= max_queries <= 20:
         raise ValueError("max_queries must be in 1..20")
     if not model or "/" in model or "?" in model or "#" in model:
