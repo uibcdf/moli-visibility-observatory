@@ -1,0 +1,27 @@
+name: Collect opt-in Brave baseline
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    environment: visibility-data-collection
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Collect (requires authorized repository secret)
+        env:
+          BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+        run: python -m visibility_observatory.brave --output build/observations/brave.json
+      - name: Evaluate
+        run: python -m visibility_observatory --run build/observations/brave.json --output build/site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: brave-web-search-observation
+          path: |
+            build/observations/brave.json
+            build/site/
+          retention-days: 30
