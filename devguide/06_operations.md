@@ -12,6 +12,15 @@ python -m http.server 8000 --directory build/public-site
 
 Python standard library is sufficient for current commands. Check packaging and Python compatibility before changing dependencies. Do **not** use actual API credentials in unit tests.
 
+An offline manifest can be generated and checked with the synthetic fixture; this does not query a provider or retain original answers:
+
+```bash
+python -m visibility_observatory.evidence_manifest --run examples/sample.json --output /tmp/moli-sample.manifest.json
+python -m visibility_observatory.evidence_manifest --run examples/sample.json --check /tmp/moli-sample.manifest.json
+```
+
+For real captures, keep the source file and manifest in an access-controlled location only after the applicable provider terms, privacy and retention period have been approved. The manifest is marked `internal_unreviewed` and must not be fed into the public Pages workflow. Verification needs the exact capture and benchmark bytes; the command does not download expiring Actions artifacts or merge runs.
+
 ## Manual experiments (require consent, validated free-tier quota and secrets)
 
 - `Collect opt-in free-provider baseline`: Tavily/Exa ranked search, limited query count.

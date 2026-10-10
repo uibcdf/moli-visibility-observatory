@@ -10,6 +10,7 @@ visibility_observatory/brave.py       optional Brave collection
 visibility_observatory/gemini.py      Gemini generation client (no native paid grounding)
 visibility_observatory/agent_batch.py checkpointed closed-book Gemini batches
 visibility_observatory/exa_assisted.py Exa titles/URLs passed to Gemini as context
+visibility_observatory/evidence_manifest.py offline internal manifest and byte-hash verification
 visibility_observatory/publish.py     reviewed-only public web-summary dashboard
 visibility_observatory/agent_publish.py reviewed-only independent agent-summary page
 data/baselines/                     reviewed Tavily and Exa compact web summaries
@@ -39,6 +40,8 @@ Gemini closed-book stores `agent-observation-v1`, model, mode, prompt benchmark 
 | Web capture `1` | `providers.py` / `brave.py` | 30-day Actions artifact; reviewed `baseline-summary-v1` committed | Summary retains hit ranks, not every returned result |
 | Agent capture `agent-observation-v1` | `gemini.py` / `agent_batch.py` | 30-day Actions artifact; reviewed `agent-baseline-summary-v1` committed for one complete run | Summary retains mention count, not response text |
 | Assisted capture `agent-assisted-observation-v1` | `exa_assisted.py` | 30-day Actions artifact; no reviewed public assisted summary yet | Source lists and answer are not in a durable committed record |
+
+`evidence-manifest-v1` is a separate **internal, unreviewed** derivative. `evidence_manifest.py` reads an existing local capture and the exact benchmark bytes, validates query IDs and statuses, and computes SHA-256 digests plus a deterministic run ID. It records provider/model/protocol metadata when present, approved web configuration fields, per-query complete/partial/error/unattempted states, safe numeric HTTP status and finish reason. It omits ranked URLs, titles, prompts and generated answers. Verification requires the exact original bytes: a hash is a reference to evidence, not a replacement for it. The public Pages renderer does not ingest manifests. No raw capture is archived or made publishable by this command.
 
 The `validate.yml` workflow runs tests and builds a clearly synthetic preview on push and pull request. `pages.yml` deploys reviewed summaries on relevant pushes or manual dispatch. Provider workflows use manual dispatch only: Tavily/Exa can request 1, 5 or 20 queries; Brave requests all 20; Gemini closed-book can request 1, 5 or 20 and retry a transient 5xx once per query; Exa-assisted defaults to one query or explicitly selects I01–I05. These workflows can consume provider quota and must not be triggered during a documentation or test audit. The code does not enforce an account-level spending cap or inspect remaining quota.
 

@@ -21,7 +21,7 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 ## P2 — durable, verifiable evidence
 
 - [ ] Define approved retention and publication of raw answers/results; enforce third-party ToS and privacy constraints.
-- [ ] Store run manifests, query IDs, model/provider metadata, source lists and content hashes; immutable run identity.
+- [ ] Store run manifests, query IDs, model/provider metadata, source lists and content hashes; immutable run identity. An offline `evidence-manifest-v1` builder now validates IDs/states and hashes exact source/benchmark bytes, but no approved durable store or source-list retention exists.
 - [ ] Validated merge/resume across runs with duplicate/conflict checks and missing-data semantics.
 - [ ] Separate unreviewed raw evidence from reviewed public summaries.
 - **Gate:** raw-to-summary reconstruction validated from a retained run; no dependence on expiring artifacts.
