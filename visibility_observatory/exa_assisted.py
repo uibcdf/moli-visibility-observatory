@@ -10,7 +10,7 @@ import urllib.request
 
 from visibility_observatory.__main__ import ROOT, load
 from visibility_observatory.agent_batch import write_atomic
-from visibility_observatory.gemini import collect, PROTOCOL_VERSION
+from visibility_observatory.gemini import collect, OUTPUT_TOKENS, PROTOCOL_VERSION
 from visibility_observatory.providers import _fetch
 
 def capture(gemini_key, exa_key, benchmark, *, output, model="gemini-3.8-flash",
@@ -25,6 +25,7 @@ def capture(gemini_key, exa_key, benchmark, *, output, model="gemini-3.8-flash",
           "benchmark_version":benchmark["version"],"track":"agent_recommendation",
           "mode":"exa_assisted","model":model,"retrieval_provider":"exa-search-api",
           "top_k":top_k,"protocol_version":PROTOCOL_VERSION,
+          "output_token_limit":OUTPUT_TOKENS,
           "collected_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
           "requested_query_ids":[q["id"] for q in selected],
           "evaluation_status":"unadjudicated","samples":[]}

@@ -21,6 +21,15 @@ python -m visibility_observatory.evidence_manifest --run examples/sample.json --
 
 For real captures, keep the source file and manifest in an access-controlled location only after the applicable provider terms, privacy and retention period have been approved. The manifest is marked `internal_unreviewed` and must not be fed into the public Pages workflow. Verification needs the exact capture and benchmark bytes; the command does not download expiring Actions artifacts or merge runs.
 
+To reconcile two already-local captures of the **same provider/model/protocol**, use an internal destination outside the Pages input tree:
+
+```bash
+python -m visibility_observatory.evidence_merge --run /path/to/run-1.json --run /path/to/run-2.json --output /tmp/moli-merge.json
+python -m visibility_observatory.evidence_merge --run /path/to/run-1.json --run /path/to/run-2.json --check /tmp/moli-merge.json
+```
+
+The command makes no provider requests. It rejects duplicate capture files, incompatible settings and multiple complete attempts for one query. It retains only status/provenance metadata; keep every permitted original capture separately for reconstruction. This is not an automatic retry launcher or a public summary.
+
 ## Manual experiments (require consent, validated free-tier quota and secrets)
 
 - `Collect opt-in free-provider baseline`: Tavily/Exa ranked search, limited query count.

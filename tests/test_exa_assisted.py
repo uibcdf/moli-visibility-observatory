@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from visibility_observatory.exa_assisted import capture
+from visibility_observatory.gemini import OUTPUT_TOKENS
 
 BENCH={"version":"1.0","queries":[{"id":"G01","query":"library"},{"id":"G02","query":"converter"}]}
 
@@ -19,6 +20,7 @@ class Tests(unittest.TestCase):
                       search=search,model_call=model,pause=lambda x:None)
             self.assertEqual(d["complete_count"],2)
             self.assertEqual(d["mode"],"exa_assisted")
+            self.assertEqual(d["output_token_limit"],OUTPUT_TOKENS)
             self.assertEqual([x["query_id"] for x in d["samples"]],["G01","G02"])
             self.assertNotIn("secret",p.read_text())
     def test_short_retrieval_never_calls_gemini(self):

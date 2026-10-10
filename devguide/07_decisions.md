@@ -17,6 +17,7 @@ This file preserves why the Observatory works as it does. Add dated decisions ra
 | 2026-10-10 | Plan, but do not enable, monthly collection | Need proven quota, provider terms, robust persistence and alerts first. |
 | 2026-10-10 | Add prompt protocol and output token limit to new closed-book batch checkpoints | These settings affect comparability and should survive independently of code lookup; preserve historical artifacts and the additive V1 schema. |
 | 2026-10-10 | Keep the first evidence manifest internal and content-free | Hash exact capture/benchmark bytes and preserve missingness without copying provider results into public data; a manifest cannot replace licensed source retention or authorize publication. |
+| 2026-10-10 | Reconcile compatible local captures as an attempt ledger | Keep every missing/failed attempt and choose a result only when exactly one complete attempt exists; stop on duplicate complete evidence rather than silently overwriting it. Require explicit comparison metadata, including generation profile and token budget; historical captures missing it need separate provenance review. The panel remains internal and spans multiple runs. |
 
 ## Future decision candidates
 

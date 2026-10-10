@@ -40,6 +40,10 @@ Deferred because API grounding may involve billing. Only consider after explicit
 - Snapshot reproducibility requires retaining allowed raw answers and retrieved evidence with checksums; compact summaries alone are insufficient.
 - Provider API policies, quotas and datasets may change; check contemporaneous documentation before automation.
 
+## Offline multi-run reconciliation
+
+The internal `evidence-merge-v1` format can reconcile multiple captures only when their exact benchmark bytes and measurement settings agree. It retains the source run IDs, timestamps and every attempted status. For a query with one complete attempt, that attempt is identified; any earlier failure or truncation stays in the ledger. Two complete attempts are a conflict requiring review, even if they look similar. Queries with no complete attempt remain non-evaluable. A merged panel spans multiple capture times and can suffer retry/selection bias; do not present its counts as an independent single-run rate or mix tracks/providers. No public metric is calculated by the merge command.
+
 ## Proposed adjudication rubric (not yet deployed)
 
 A second-stage reviewer should classify each completed answer as: explicit name mention (exact evidence span), recommended or merely compared, top-ranked or alternative, stated reason, scientifically relevant/irrelevant, accurate/inaccurate/unknown claims, and cited source grounding. Store reviewer identity and disagreements rather than treating automatic string matching as scientific judgment.
