@@ -36,6 +36,12 @@ def capture(gemini_key, exa_key, benchmark, *, output, model="gemini-3.8-flash",
             # A short retrieval may still provide useful context, but log it explicitly.
             sources=[{"rank":i,"url":s["url"],"title":s["title"]}
                      for i,s in enumerate(found[:top_k],1)]
+            if len(sources) < top_k:
+                data["samples"].append({"query_id":q["id"],"status":"partial",
+                    "retrieval_status":"partial","sources":sources,
+                    "reason":"fewer_sources_than_requested"})
+                write_atomic(output,data)
+                continue
             context="\n".join(f"[{s['rank']}] {s['title']} | {s['url']}" for s in sources)
             result=model_call(gemini_key,benchmark,model=model,mode="closed_book",
                               max_queries=1,start_index=start_index+offset,context=context)
