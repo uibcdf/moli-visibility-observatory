@@ -1,0 +1,98 @@
+{
+  "schema_version": "baseline-summary-v1",
+  "date": "2026-10-10",
+  "track": "web_search",
+  "provider": "exa-search-api",
+  "mode": "auto",
+  "run_url": "https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38043761135",
+  "artifact_url": "https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38043761135/artifacts/11667710069",
+  "benchmark_version": "1.0",
+  "queries_requested": 20,
+  "complete": 20,
+  "partial": 0,
+  "errors": 0,
+  "k": 10,
+  "presence_at_10": 0.6,
+  "mrr_at_10": 0.39166666666666666,
+  "hits": [
+    {
+      "query_id": "G02",
+      "rank": 3,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/foundations/support/third_party_bridges.html",
+      "title": "G02 — MolSysMT source"
+    },
+    {
+      "query_id": "G04",
+      "rank": 3,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/foundations/support/third_party_bridges.html",
+      "title": "G04 — MolSysMT source"
+    },
+    {
+      "query_id": "I01",
+      "rank": 2,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/foundations/support/third_party_bridges.html",
+      "title": "I01 — MolSysMT source"
+    },
+    {
+      "query_id": "I02",
+      "rank": 1,
+      "url": "https://github.com/uibcdf/molsysmt/",
+      "title": "I02 — MolSysMT source"
+    },
+    {
+      "query_id": "I03",
+      "rank": 1,
+      "url": "https://github.com/uibcdf/molsysmt/",
+      "title": "I03 — MolSysMT source"
+    },
+    {
+      "query_id": "I04",
+      "rank": 1,
+      "url": "https://github.com/uibcdf/molsysmt/",
+      "title": "I04 — MolSysMT source"
+    },
+    {
+      "query_id": "S01",
+      "rank": 6,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/tools/build/fixed_state_hydrogens.html",
+      "title": "S01 — MolSysMT source"
+    },
+    {
+      "query_id": "S03",
+      "rank": 1,
+      "url": "https://github.com/uibcdf/molsysmt/",
+      "title": "S03 — MolSysMT source"
+    },
+    {
+      "query_id": "S04",
+      "rank": 1,
+      "url": "https://www.uibcdf.org/molsysmt/content/course/Common_Core/04_Native_Forms.html",
+      "title": "S04 — MolSysMT source"
+    },
+    {
+      "query_id": "D02",
+      "rank": 1,
+      "url": "https://github.com/uibcdf/molsysmt/",
+      "title": "D02 — MolSysMT source"
+    },
+    {
+      "query_id": "D03",
+      "rank": 3,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/tools/form/file/file_pdb.html",
+      "title": "D03 — MolSysMT source"
+    },
+    {
+      "query_id": "D05",
+      "rank": 6,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/foundations/performance/rust_core.html",
+      "title": "D05 — MolSysMT source"
+    }
+  ],
+  "limitations": [
+    "One Exa auto-mode provider and one point in time",
+    "Semantic search ranks are not directly comparable with Tavily basic-mode ranks",
+    "Not a measurement of model recommendations or scientific quality",
+    "Canonical URL matching may undercount mirror/third-party references",
+    "Results include a Scindices mirror which is excluded from canonical MolSysMT hit scoring; this requires transparent documentation"
+  ]
+}
