@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - 'data/baselines/**'
+      - 'data/agent-baselines/**'
+      - 'visibility_observatory/agent_publish.py'
+      - 'tests/test_agent_publish.py'
       - 'visibility_observatory/publish.py'
       - 'tests/test_publish.py'
       - '.github/workflows/pages.yml'
