@@ -1,0 +1,31 @@
+{
+  "schema_version": "baseline-summary-v1",
+  "date": "2026-10-10",
+  "track": "web_search",
+  "provider": "tavily-search-api",
+  "mode": "basic",
+  "run_url": "https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38040732355",
+  "artifact_url": "https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38040732355/artifacts/11665850695",
+  "benchmark_version": "1.0",
+  "queries_requested": 20,
+  "complete": 20,
+  "partial": 0,
+  "errors": 0,
+  "k": 10,
+  "presence_at_10": 0.05,
+  "mrr_at_10": 0.025,
+  "hits": [
+    {
+      "query_id": "D05",
+      "rank": 2,
+      "url": "https://www.uibcdf.org/molsysmt/content/user/foundations/performance/rust_core.html",
+      "title": "The Rust Core – MolSysMT 0.21.0"
+    }
+  ],
+  "limitations": [
+    "One provider and one point in time",
+    "Not an AI agent nomination experiment",
+    "Canonical URL matcher may have false negatives",
+    "Provider topical relevance not yet audited"
+  ]
+}
