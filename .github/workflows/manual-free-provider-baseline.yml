@@ -1,0 +1,48 @@
+name: Collect opt-in free-provider baseline
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: Provider to measure (requires corresponding Actions secret)
+        type: choice
+        required: true
+        options:
+          - tavily
+          - exa
+      max_queries:
+        description: Maximum search requests for this run (1-20)
+        type: choice
+        required: true
+        default: '20'
+        options:
+          - '1'
+          - '5'
+          - '20'
+permissions:
+  contents: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Validate tests before any API use
+        run: python -m unittest discover -s tests -v
+      - name: Bounded collection (manual action only)
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          PROVIDER: ${{ inputs.provider }}
+          MAX_QUERIES: ${{ inputs.max_queries }}
+        run: python -m visibility_observatory.providers --provider "$PROVIDER" --max-queries "$MAX_QUERIES" --output build/observations/selected.json
+      - name: Evaluate web-search visibility
+        run: python -m visibility_observatory --run build/observations/selected.json --output build/site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: search-observation-${{ inputs.provider }}
+          path: |
+            build/observations/selected.json
+            build/site/
+          retention-days: 30
