@@ -1,5 +1,8 @@
 # MOLI Visibility Observatory
 
+> **Developer onboarding and roadmap:** start with [`devguide/README.md`](devguide/README.md). It contains purpose, architecture, experimental methodology, dated checkpoint, roadmap, operations and decisions. Codex and contributors should read it before making changes.
+
+
 A reproducible research prototype for measuring **scientific software discoverability** in web search. Initial case: **MolSysMT**.
 
 > **First real web-search baseline recorded:** Tavily basic, 2026-10-10, 20/20 evaluable queries, Presence@10 5%, MRR@10 0.025. These are provider-specific discovery metrics, **not agent recommendation rates**. The earlier unarchived exploratory searches are not a quantitative baseline.
