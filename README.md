@@ -2,7 +2,7 @@
 
 A reproducible research prototype for measuring **scientific software discoverability** in web search. Initial case: **MolSysMT**.
 
-> **No validated visibility baseline has been collected.** The exploratory October 2026 conversation did not preserve full result ranks and provenance; it is not a 0/20 recall@10 measurement or a multiple-agent benchmark.
+> **First real web-search baseline recorded:** Tavily basic, 2026-10-10, 20/20 evaluable queries, Presence@10 5%, MRR@10 0.025. These are provider-specific discovery metrics, **not agent recommendation rates**. The earlier unarchived exploratory searches are not a quantitative baseline.
 
 ## Current features
 
@@ -22,7 +22,7 @@ python -m http.server --directory build/site 8000
 
 ## Not yet enabled
 
-No live search provider, independent AI-agent evaluation, monthly schedule, paid API usage, or automatic public Pages deployment. These require source terms/cost review and an auditable first real baseline. See [methodology](docs/methodology.md).
+Independent AI-agent evaluation, monthly API schedules, and automatic paid usage are not enabled. An opt-in live Tavily adapter has been run successfully. Pages deployment uses reviewed summaries only and requires enabling GitHub Pages with GitHub Actions as its source. These require source terms/cost review and an auditable first real baseline. See [methodology](docs/methodology.md).
 
 ### Project issues
 
@@ -57,3 +57,16 @@ python -m visibility_observatory --run build/observations/tavily.json --output b
 ```
 
 **Budget and semantics:** each collector run makes at most the `--max-queries` configured search requests; Tavily uses basic search and Exa uses auto search. Free-tier credits and provider terms can change. Do not assume both ranked lists or presence@10 results are interchangeable. Calls are sequential and have no automated retries. Provider errors are recorded without exposing API keys.
+
+## Public dashboard
+
+A separate `visibility_observatory.publish` program renders **reviewed, committed summary records only** from `data/baselines/*.summary.json`. It never publishes synthetic examples, credentials or unreviewed raw search responses.
+
+```bash
+python -m visibility_observatory.publish --output build/public-site
+python -m http.server --directory build/public-site 8000
+```
+
+[First reviewed summary](data/baselines/2026-10-10-tavily-basic.summary.json) · [Tavily source run](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38040732355).
+
+**GitHub Pages setup:** Under **Settings → Pages → Build and deployment → Source**, select **GitHub Actions**. The workflow `Publish reviewed visibility summaries` is configured to deploy only the reviewed dashboard. If Pages is not enabled, the deploy action may fail; re-run it after enabling. Expected Pages location (once published): https://uibcdf.github.io/moli-visibility-observatory/ . No monthly API collection is enabled.
