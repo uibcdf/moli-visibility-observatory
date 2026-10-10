@@ -92,3 +92,11 @@ The new manual workflow **Gemini complete benchmark (checkpointed)** executes up
 It does **not** run automatically or make paid API calls on a schedule. Check free-tier quota before manually starting 20 queries. It does not currently restore a checkpoint across different GitHub Actions runs; it preserves within-run evidence to support future deduplicated merging.
 
 No joint consensus is computed. Tavily and Exa measure separate web-search discoverability, and Gemini measures independent model output. Agent recommendations must be scored and adjudicated separately, rather than being assigned search-engine ranks.
+
+## Gemini 3.8 Flash: model-controlled experiment (2026-10-10)
+
+The manual `Gemini complete benchmark (checkpointed)` workflow now offers two **separate model identities**: `gemini-3.8-flash` (selected by default) and the previous `gemini-3.1-flash-lite`. Each capture stores its chosen model in the result. First test **count=1**, inspect the API project's quotas and token consumption, then consider a 20-query run. Distinct models must not be merged into one trend or silently replace the historical baseline.
+
+Google's published [pricing](https://ai.google.dev/gemini-api/docs/pricing) lists free-tier text generation for Gemini 3.8 Flash but **Google Search grounding is unavailable on the API free tier**. The repository keeps grounding disabled; no paid/grounded workflow has been enabled. The favorable Gemini-web 3.8 Flash answer with web search is a separate qualitative observation, not a reproducible API record. A future grounded comparison requires explicit billing approval, cost caps and review of terms.
+
+Web discovery, semantic search and model recommendation remain independently reported; no composite consensus score is justified.
