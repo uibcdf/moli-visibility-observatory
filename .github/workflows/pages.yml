@@ -1,0 +1,36 @@
+name: Publish reviewed visibility summaries
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/baselines/**'
+      - 'visibility_observatory/publish.py'
+      - 'tests/test_publish.py'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: visibility-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m unittest discover -s tests -v
+      - run: python -m visibility_observatory.publish --output build/public-site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/public-site
+      - id: deployment
+        uses: actions/deploy-pages@v4
