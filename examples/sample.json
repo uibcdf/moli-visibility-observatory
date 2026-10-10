@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "benchmark_version": "1.0",
+  "track": "web_search",
+  "provider": "synthetic-test",
+  "collected_at_utc": "2026-10-10T00:00:00Z",
+  "synthetic": true,
+  "samples": [
+    {
+      "query_id": "G01",
+      "status": "partial",
+      "results": [
+        {
+          "url": "https://example.org",
+          "title": "Synthetic"
+        }
+      ]
+    }
+  ]
+}
