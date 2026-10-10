@@ -36,7 +36,7 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
                 "Name specific tools when appropriate, explain why, and mention relevant limitations. "
                 "Do not fabricate capabilities or citations. Request: " + item["query"])
         payload={"contents":[{"role":"user","parts":[{"text":prompt}]}],
-                 "generationConfig":{"temperature":0,"maxOutputTokens":768}}
+                 "generationConfig":{"temperature":0,"maxOutputTokens":2048}}
         if mode=="google_search":
             payload["tools"]=[{"google_search":{}}]
         request=urllib.request.Request(ENDPOINT.format(model=urllib.parse.quote(model,safe="")),
@@ -51,7 +51,7 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
             first=candidates[0]
             parts=first.get("content",{}).get("parts",[])
             answer="\n".join(p["text"] for p in parts if isinstance(p,dict) and isinstance(p.get("text"),str))
-            samples.append({"query_id":item["id"],"status":"complete" if answer else "partial",
+            samples.append({"query_id":item["id"],"status":"complete" if answer and first.get("finishReason") == "STOP" else "partial",
                 "answer":answer,"finish_reason":first.get("finishReason"),
                 "grounding_metadata":first.get("groundingMetadata",{}) if mode=="google_search" else None,
                 "usage":result.get("usageMetadata",{})})
