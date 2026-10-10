@@ -56,3 +56,15 @@ The provider configuration, prompt profile and benchmark **all affect comparabil
 ## Security and boundary contracts
 
 Secrets remain GitHub Actions secrets: `TAVILY_API_KEY`, `EXA_API_KEY`, `GEMINI_API_KEY`; optional `BRAVE_SEARCH_API_KEY`. Never commit, log or copy credentials. No raw provider error bodies containing unknown identifiers. Public Pages reads reviewed summaries rather than unreviewed raw captures. Recheck provider storage/redistribution rules before archival publication.
+
+## Preliminary provider-terms review — 2026-10-10
+
+This is a source inventory, not a determination that the existing public summaries or any future archive is licensed. The applicable account agreement or order form may differ; obtain owner/provider review before expanding publication or retaining full provider output.
+
+| Provider | Current primary-source concern | Working boundary |
+| --- | --- | --- |
+| Tavily | [Platform Terms §3.2](https://www.tavily.com/terms) restrict disclosure to third parties of performance information or analysis relating to the service. Public Presence@10/MRR@10 may fall within that wording; the actual account terms and permission need review. | Do not add further Tavily public metrics or full ranked output until clarified. |
+| Exa | [Terms §4.2(a)](https://exa.ai/assets/Exa_Labs_Terms_of_Service.pdf) broadly restrict copying, downloading and publishing information obtained through the service unless otherwise permitted. The scope for API result URLs/titles and derived metrics is unclear; check the applicable API agreement and obtain written clarification if needed. | Do not treat the existing artifact or summary as permission for a durable public raw archive. |
+| Gemini | [Gemini API Additional Terms](https://ai.google.dev/gemini-api/terms) say Google does not claim ownership of generated content, while use remains subject to law and the API terms. The terms distinguish unpaid and paid data handling, including a regional exception; this does not authorize billable runs or indiscriminate publication of submitted or generated content. | Keep prompts free of sensitive data and review attribution, privacy and output rights before storing or publishing full answers. |
+
+The existing public Tavily/Exa summaries predate this terms review. Their continued publication needs an explicit owner/legal determination. No source response was downloaded or newly published during this review.

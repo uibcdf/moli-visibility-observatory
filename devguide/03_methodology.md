@@ -4,6 +4,14 @@
 
 `queries/v1.json`: 20 English-language **unbranded** task queries in four families (G general, I interoperability, S scientific tasks, D differentiation), five each. Keep V1 unchanged; changes require a new version and explicit comparability notes. Some V1 questions name *other* tools; this may bias recall toward those tools.
 
+## Candidate V2 design (not frozen or executed)
+
+Twenty V1 prompts are sufficient for an exploratory, dated panel, but each observation changes a 20-query rate by five percentage points. Their English-only wording, four broad families and named alternatives limit generalization. Repeating the same prompts helps track those prompts over time; it does not make them a random sample of scientific-software needs. Keep V1 intact and report any future V2 separately.
+
+Before writing `queries/v2.json`, define the target use cases and a balanced matrix. Candidate dimensions are: structure preparation and repair; topology/coordinate/trajectory conversion; atom selection and structural analysis; simulation setup and interoperability; reproducibility/storage; and deliberately out-of-scope tasks that test over-recommendation. For each task, vary wording (researcher request versus feature description), specificity (broad versus concrete input/output), and named-alternative anchoring. Keep the primary discovery stratum unbranded; place prompts naming other packages and any Spanish-language prompts in explicitly separate strata. Include cases where MolSysMT should not be recommended.
+
+Draft examples for review, not measurement prompts: “Which Python tools can prepare a protein structure with missing atoms and hydrogens for simulation?”, “How can I move topology and coordinates between molecular Python libraries while checking what information is lost?”, and “What can compare contacts across a molecular-dynamics trajectory stored separately from its topology?” Validate scientific relevance and current package capabilities before freezing wording. Set sample size from the intended claim and quota/cost budget, then pilot a few questions before any full run. Do not merge V1 and V2 denominators.
+
 ## Track A: ranked search retrieval
 
 Evaluate each provider **separately**. At k=10, a query is evaluable only with a declared complete capture of >=10 ordered results. Presence@10 = number of eligible queries containing a canonical MolSysMT URL in top ten / number of eligible queries. MRR@10 = mean reciprocal first canonical hit rank across eligible queries. Report exact numerator and denominator. Canonical URL detection is provisional; audit false negatives, mirrors, redirects and out-of-date docs.
