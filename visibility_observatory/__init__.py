@@ -1,0 +1,1 @@
+"""Visibility observatory prototype."""
