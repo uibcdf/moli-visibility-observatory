@@ -2,6 +2,14 @@ name: Gemini complete benchmark (checkpointed)
 on:
   workflow_dispatch:
     inputs:
+      model:
+        description: Explicit API model; first try one free-tier query
+        type: choice
+        required: true
+        default: 'gemini-3.8-flash'
+        options:
+          - 'gemini-3.8-flash'
+          - 'gemini-3.1-flash-lite'
       count:
         description: Number of consecutive queries (maximum 20)
         type: choice
@@ -34,7 +42,8 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           COUNT: ${{ inputs.count }}
           START: ${{ inputs.start_index }}
-        run: python -m visibility_observatory.agent_batch --start-index "$START" --count "$COUNT" --delay-seconds 8 --output build/observations/gemini-batch.json
+          MODEL: ${{ inputs.model }}
+        run: python -m visibility_observatory.agent_batch --model "$MODEL" --start-index "$START" --count "$COUNT" --delay-seconds 8 --output build/observations/gemini-batch.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
