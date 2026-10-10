@@ -108,3 +108,10 @@ Web discovery, semantic search and model recommendation remain independently rep
 **Potential future option:** Gemini 3.8 Flash with **native Google Search grounding** through the Gemini API. This may require enabling paid API billing, independently of a Google AI Pro consumer subscription. It is **deferred**, not authorized. Before implementation: verify current pricing/quotas/terms; obtain explicit spending approval; enforce bounded pilot and cost limits; keep native Google-grounded results separate from Exa-assisted and closed-book runs; measure whether added recommendation quality justifies additional costs. Do not activate any billable scheduled workflow by default.
 
 See [roadmap issue #1](https://github.com/uibcdf/moli-visibility-observatory/issues/1).
+
+## Development update: concise protocol and Exa-assisted Gemini pilot
+
+- A new **concise-v2** Gemini generation profile limits response length instructions, raises the output-token ceiling to 4096 and preserves the frozen V1 benchmark queries. Results from concise-v2 must be analyzed separately from the earlier generation protocol.
+- An experimental `exa_assisted` collector (`visibility_observatory/exa_assisted.py`) obtains the top five Exa titles/URLs per query and inserts that **limited retrieved evidence** into the Gemini prompt. It retains source ranks and links for inspection. **It does not fetch full page contents**, so model claims and downstream recommendation quality remain unvalidated.
+- Manual workflow: **Gemini + Exa assisted pilot**; default **one** query, no cron and no paid Google Search grounding. Run only after reviewing API free-tier quotas. Errors are recorded with source provenance; responses are not merged into Tavily/Exa web metrics.
+- Benchmarked experiments must preserve exact prompt protocol, model, retrieval settings and run identifier. Test results from earlier protocols are not longitudinally identical to these new measurements.
