@@ -23,13 +23,9 @@ class GeminiTests(unittest.TestCase):
         self.assertEqual(r["samples"][0]["status"],"complete")
         self.assertEqual(r["evaluation_status"],"unadjudicated")
         self.assertNotIn("secret",json.dumps(r))
-    def test_search_is_separate_track(self):
-        def fake(req,timeout):
-            self.assertEqual(json.loads(req.data)["tools"],[{"google_search":{}}])
-            return Response(b'{"candidates":[{"content":{"parts":[{"text":"MDAnalysis"}]}}]}')
-        result=collect("secret",BENCH,mode="google_search",opener=fake)
-        self.assertEqual(result["track"],"agent_recommendation")
-        self.assertEqual(result["mode"],"google_search")
+    def test_search_disabled_without_billing_review(self):
+        with self.assertRaisesRegex(ValueError, "billing review"):
+            collect("secret", BENCH, mode="google_search")
     def test_http_status_is_preserved_without_provider_body(self):
         def fail(req, timeout):
             raise urllib.error.HTTPError(req.full_url, 429, "private provider details", {}, None)
