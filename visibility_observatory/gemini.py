@@ -53,6 +53,11 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
                 "answer":answer,"finish_reason":first.get("finishReason"),
                 "grounding_metadata":first.get("groundingMetadata",{}) if mode=="google_search" else None,
                 "usage":result.get("usageMetadata",{})})
+        except urllib.error.HTTPError as error:
+            # Expose only HTTP status, never request headers or provider error body.
+            samples.append({"query_id":item["id"],"status":"error",
+                            "error_type":"HTTPError","http_status":error.code})
+            break
         except (urllib.error.URLError,TimeoutError,ValueError,KeyError,TypeError) as error:
             samples.append({"query_id":item["id"],"status":"error","error_type":type(error).__name__})
             # Fail closed after an API error to avoid repeated charge/rate-limit attempts.
