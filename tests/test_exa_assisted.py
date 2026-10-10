@@ -21,6 +21,17 @@ class Tests(unittest.TestCase):
             self.assertEqual(d["mode"],"exa_assisted")
             self.assertEqual([x["query_id"] for x in d["samples"]],["G01","G02"])
             self.assertNotIn("secret",p.read_text())
+    def test_short_retrieval_never_calls_gemini(self):
+        def search(provider,key,query,depth,opener):
+            return [{"url":"https://example.org/one","title":"One result"}]
+        def forbidden(*args,**kwargs):
+            raise AssertionError("Gemini must not receive incomplete retrieval context")
+        with tempfile.TemporaryDirectory() as tmp:
+            data=capture("gemini-secret","exa-secret",BENCH,
+                output=Path(tmp)/"response.json",count=1,top_k=5,
+                search=search,model_call=forbidden,pause=lambda _:None)
+            self.assertEqual(data["complete_count"],0)
+            self.assertEqual(data["samples"][0]["status"],"partial")
     def test_missing_key_does_not_call(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(ValueError):
