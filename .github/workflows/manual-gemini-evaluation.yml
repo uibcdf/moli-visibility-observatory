@@ -3,12 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Closed-book (no search) or Gemini grounding with Google Search
+        description: Closed-book only; Google Search grounding disabled for free-tier safety
         required: true
         type: choice
         options:
           - closed_book
-          - google_search
       max_queries:
         description: Maximum API requests (pilot with 1)
         required: true
