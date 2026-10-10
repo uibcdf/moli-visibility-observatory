@@ -8,6 +8,17 @@ on:
         type: choice
         options:
           - closed_book
+      start_index:
+        description: Zero-based offset in the 20-query benchmark (0 starts at G01; 2 starts at G03)
+        required: true
+        type: choice
+        default: '0'
+        options:
+          - '0'
+          - '2'
+          - '5'
+          - '10'
+          - '15'
       max_queries:
         description: Maximum API requests (pilot with 1)
         required: true
@@ -34,7 +45,8 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           EVAL_MODE: ${{ inputs.mode }}
           MAX_QUERIES: ${{ inputs.max_queries }}
-        run: python -m visibility_observatory.gemini --mode "$EVAL_MODE" --max-queries "$MAX_QUERIES"
+          START_INDEX: ${{ inputs.start_index }}
+        run: python -m visibility_observatory.gemini --mode "$EVAL_MODE" --max-queries "$MAX_QUERIES" --start-index "$START_INDEX"
       - name: Require a complete, nonempty pilot answer
         run: |
           python - <<'PY'
