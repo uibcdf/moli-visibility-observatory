@@ -69,10 +69,14 @@ def capture(gemini_key, exa_key, benchmark, *, output, model="gemini-3.8-flash",
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--model",default="gemini-3.8-flash",choices=("gemini-3.8-flash","gemini-3.1-flash-lite"))
+    p.add_argument("--category",choices=("custom","interoperability"),default="custom")
     p.add_argument("--count",type=int,default=1)
     p.add_argument("--start-index",type=int,default=0)
     p.add_argument("--output",default="build/observations/exa-assisted.json")
     args=p.parse_args()
+    if args.category=="interoperability":
+        args.start_index=5
+        args.count=5
     data=capture(os.environ.get("GEMINI_API_KEY"),os.environ.get("EXA_API_KEY"),
         load(ROOT/"queries/v1.json"),model=args.model,count=args.count,
         start_index=args.start_index,output=args.output)
