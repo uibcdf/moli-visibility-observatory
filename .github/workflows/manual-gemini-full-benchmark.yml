@@ -1,0 +1,43 @@
+name: Gemini complete benchmark (checkpointed)
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: Number of consecutive queries (maximum 20)
+        type: choice
+        required: true
+        default: '20'
+        options: ['1', '5', '20']
+      start_index:
+        description: Zero-based first query index
+        type: choice
+        required: true
+        default: '0'
+        options: ['0', '5', '10', '15']
+permissions:
+  contents: read
+concurrency:
+  group: gemini-closed-book-manual
+  cancel-in-progress: false
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m unittest discover -s tests -v
+      - name: Capture all requests with checkpoints
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          COUNT: ${{ inputs.count }}
+          START: ${{ inputs.start_index }}
+        run: python -m visibility_observatory.agent_batch --start-index "$START" --count "$COUNT" --delay-seconds 8 --output build/observations/gemini-batch.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gemini-batch-${{ github.run_id }}
+          path: build/observations/gemini-batch.json
+          retention-days: 30
