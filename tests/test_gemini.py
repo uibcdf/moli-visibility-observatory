@@ -26,6 +26,11 @@ class GeminiTests(unittest.TestCase):
     def test_search_disabled_without_billing_review(self):
         with self.assertRaisesRegex(ValueError, "billing review"):
             collect("secret", BENCH, mode="google_search")
+    def test_truncated_answer_is_partial(self):
+        def truncated(req, timeout):
+            return Response(b'{"candidates":[{"content":{"parts":[{"text":"An incomplete recommendation"}]},"finishReason":"MAX_TOKENS"}]}')
+        result = collect("secret", BENCH, opener=truncated)
+        self.assertEqual(result["samples"][0]["status"], "partial")
     def test_http_status_is_preserved_without_provider_body(self):
         def fail(req, timeout):
             raise urllib.error.HTTPError(req.full_url, 429, "private provider details", {}, None)
