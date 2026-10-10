@@ -15,6 +15,7 @@ This file preserves why the Observatory works as it does. Add dated decisions ra
 | 2026-10-10 | Exa-assisted V0 uses source titles and URLs only | Safe first integration but insufficient to claim full documentary grounding; review relevance and content policy. |
 | 2026-10-10 | Defer paid Gemini native Google Search grounding | Consumer subscription is not API entitlement; require explicit budget/authorization first. |
 | 2026-10-10 | Plan, but do not enable, monthly collection | Need proven quota, provider terms, robust persistence and alerts first. |
+| 2026-10-10 | Add prompt protocol and output token limit to new closed-book batch checkpoints | These settings affect comparability and should survive independently of code lookup; preserve historical artifacts and the additive V1 schema. |
 
 ## Future decision candidates
 

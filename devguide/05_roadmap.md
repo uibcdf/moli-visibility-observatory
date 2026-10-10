@@ -5,13 +5,14 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 ## P0 — documentation and audit (immediate)
 
 - [x] Establish developer guide as source of durable intent and checkpoint.
-- [ ] Audit current code, CI, Pages and test coverage from a clean checkout; reconcile stale top-level docs.
-- [ ] Record protocol/data-schema inventory and source licensing; identify expensive/unsafe actions.
+- [x] Audit current code, CI, Pages and test coverage from a clean local clone; reconcile stale top-level docs. The 2026-10-10 audit and hosted verification are in the checkpoint; no new hosted run was triggered for this documentation change.
+- [x] Record protocol/data-schema and workflow cost-risk inventory in the architecture guide.
+- [ ] Review current provider storage/redistribution terms and decide whether any original responses or retrieved results may be retained or published.
 - **Gate:** a new developer can reproduce local tests and explain each metric without conversation context.
 
 ## P1 — stabilize measurement contracts and quota handling
 
-- [ ] Formalize provider version/configuration, complete/error/partial states, output token profile and explicit denominators.
+- [ ] Formalize provider version/configuration, complete/error/partial states, output token profile and explicit denominators. New closed-book batch checkpoints now record the prompt protocol and output token limit; historical runs and remaining fields still need review.
 - [ ] Gemini 3.8: verify actual free-tier limits, 429 responses, rate limiting, backoff and fail-closed conditions.
 - [ ] Improve transport timeouts and error categorization; do not silently hide failed queries.
 - [ ] Validate 1-query then bounded multi-query pilot for concise-v2 and Exa-assisted.

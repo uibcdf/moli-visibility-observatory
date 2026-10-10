@@ -10,7 +10,7 @@ from pathlib import Path
 import time
 
 from visibility_observatory.__main__ import ROOT, load
-from visibility_observatory.gemini import DEFAULT_MODEL, collect
+from visibility_observatory.gemini import DEFAULT_MODEL, OUTPUT_TOKENS, PROTOCOL_VERSION, collect
 
 def write_atomic(path, value):
     path=Path(path)
@@ -28,7 +28,9 @@ def run_batch(key, benchmark, *, output, model=DEFAULT_MODEL, start_index=0,
     chosen=queries[start_index:start_index+count]
     data={"schema_version":"agent-observation-v1","track":"agent_recommendation",
           "benchmark_version":benchmark["version"],"provider":"google-gemini-api",
-          "model":model,"mode":"closed_book","collected_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
+          "model":model,"mode":"closed_book","protocol_version":PROTOCOL_VERSION,
+          "output_token_limit":OUTPUT_TOKENS,
+          "collected_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
           "start_index":start_index,"requested_query_ids":[q["id"] for q in chosen],
           "evaluation_status":"unadjudicated","synthetic":False,"samples":[]}
     write_atomic(output,data)

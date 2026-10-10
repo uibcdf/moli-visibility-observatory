@@ -19,9 +19,16 @@ class BatchTests(unittest.TestCase):
             self.assertEqual(x["failed_count"],1)
             self.assertEqual(json.loads(path.read_text())["complete_count"],3)
     def test_quota_429_stops(self):
+        checkpoints=[]
         def fake(key,bench,*,start_index,max_queries,model,mode):
+            checkpoints.append(json.loads(path.read_text()))
             return {"samples":[{"query_id":bench["queries"][start_index]["id"],"status":"error","http_status":429}]}
         with tempfile.TemporaryDirectory() as tmp:
-            x=run_batch("secret",BENCH,output=Path(tmp)/"result.json",count=4,collect_one=fake,pause=lambda t:None)
+            path=Path(tmp)/"result.json"
+            x=run_batch("secret",BENCH,output=path,count=4,collect_one=fake,pause=lambda t:None)
+            self.assertEqual(checkpoints[0]["protocol_version"],"concise-v2")
+            self.assertEqual(checkpoints[0]["output_token_limit"],4096)
+            self.assertEqual(json.loads(path.read_text())["protocol_version"],"concise-v2")
+            self.assertEqual(json.loads(path.read_text())["output_token_limit"],4096)
             self.assertEqual(x["unattempted_count"],3)
             self.assertEqual(x["stop_reason"],"provider_nonretryable_error")

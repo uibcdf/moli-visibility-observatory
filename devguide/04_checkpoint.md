@@ -18,11 +18,27 @@ A manually reported Gemini 3.8 Flash **web app** answer also recommended MolSysM
 ## Engineering status
 
 - **Implemented/tested previously:** Tavily and Exa adapters, Gemini clients, bounded checkpoints, manual workflows, reviewed-summary Pages renderer, synthetic tests, Gemini `concise-v2` profile (4096 output tokens), Exa-assisted titles/URLs retrieval.
-- **Latest observed Actions:** [38060534101](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38060534101) confirmed successful reviewed Pages deployment; subsequent CI runs must be checked from GitHub. Public dashboard: https://uibcdf.github.io/moli-visibility-observatory/ ; dedicated agent page path `agents.html`.
+- **Verified Actions on 2026-10-10:** [validation run 38062658257](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38062658257) succeeded for commit `b2cf007`; [Pages run 38060544005](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38060544005) succeeded for an earlier commit. These do not validate the uncommitted documentation edits in this checkpoint.
+- **Public routes checked on 2026-10-10:** the direct HTTPS [web dashboard](https://www.uibcdf.org/moli-visibility-observatory/) and [agent page](https://www.uibcdf.org/moli-visibility-observatory/agents.html) returned HTTP 200. The served web page contained Tavily and Exa sections; the agent page contained the Gemini 3.1 Flash-Lite summary. The `https://uibcdf.github.io/...` aliases currently redirect to `http://www.uibcdf.org/...`; review Pages HTTPS enforcement/redirect configuration before treating those aliases as canonical. Recheck after future deployments.
 - **Operational blocker:** Gemini 3.8 free-tier 429 observed; exact quota dimension not established. A longer 120-second transport timeout fixed one G01 timeout but does not solve quota constraints.
 - **Evidence debt:** full underlying responses are only in expiring Actions artifacts; durable versioned summaries are present in `data/baselines/` and `data/agent-baselines/`. No verified full long-term archive.
 - **Automation:** manual-only provider runs; NO monthly provider schedule and NO authorized paid Google grounding.
 
 ## Do not misstate
 
-Successful Actions != all measurements scientifically valid. 0/20 Gemini closed-book is an **explicit mention rate for one model/protocol**, not proof of ignorance. The first successful Exa-assisted I01 recommendation is a **single observation**, not a 5/5 benchmark. Earlier README and `docs/methodology.md` include initial-phase wording now stale; reconcile them in a scoped documentation cleanup.
+Successful Actions != all measurements scientifically valid. 0/20 Gemini closed-book is an **explicit mention rate for one model/protocol**, not proof of ignorance. The first successful Exa-assisted I01 recommendation is a **single observation**, not a 5/5 benchmark.
+
+## P0 documentation and local audit — 2026-10-10
+
+- Reconciled `README.md` and `docs/methodology.md` with the code and dated run summaries. They now distinguish deployed reviewed pages, the complete Gemini 3.1 name-mention baseline and the partial Gemini 3.8 Exa-assisted pilot. No experimental records or V1 questions changed.
+- A fresh local clone of commit `b2cf007` passed 32 tests and generated two reviewed web summaries plus the agent page offline. The working tree also passed 32 tests before the documentation edit. The tests use mocked network calls and do not certify current provider quotas, scientific adjudication or hosted deployment of these edits.
+- Inventory in [architecture](02_architecture.md): three raw capture schemas, two public summary schemas and seven workflows. Current public summaries cannot reconstruct all source URLs or original model answers. Earlier closed-book batch checkpoints omitted explicit prompt protocol and output-token-limit fields; their historical identity must be recovered from code/run provenance. Provider storage/redistribution terms and durable raw retention are still unreviewed.
+- After the documentation edit, the working-tree suite passed 32 tests, the reviewed site generated offline and local Markdown links resolved; `git diff --check` passed. Hosted CI has not run on these edits.
+- **Next safe step:** design a terms-reviewed retained-evidence contract with immutable run IDs, checksums and validated raw-to-summary recomputation. Do not repeat the Gemini 3.8 assisted batch until the authorized project quota behind HTTP 429 is understood.
+
+## P1 checkpoint metadata correction — 2026-10-10
+
+- `agent_batch.py` now writes `protocol_version=concise-v2` and `output_token_limit=4096` to the initial and subsequent atomic checkpoints, sourced from the same constants as the Gemini client. A mocked 429 test checks both the pre-request and final files. The existing `agent-observation-v1` schema identifier is preserved because this is additive metadata.
+- This is implemented and locally tested only. No provider call or hosted CI run was made for the change, and [historical Gemini 3.1 evidence](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38052178041) remains unchanged. Future batches can be self-describing on these two settings; full prompt text or a prompt hash is still not stored.
+- Public [web results](https://www.uibcdf.org/moli-visibility-observatory/) and [agent results](https://www.uibcdf.org/moli-visibility-observatory/agents.html) were checked again on 2026-10-10: both returned HTTPS 200 and contained the reviewed Tavily/Exa and Gemini 3.1 summaries respectively. These pages do not yet present Exa-assisted pilots or a historical trend.
+- **Next:** review retention rights, then add immutable run provenance and raw-to-summary reconstruction without changing the frozen V1 benchmark or treating incomplete Gemini 3.8 responses as negatives.

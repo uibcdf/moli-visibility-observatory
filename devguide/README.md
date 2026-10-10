@@ -14,7 +14,7 @@ This directory is the durable onboarding, architecture, methodology, execution a
 6. [Operations and handoff](06_operations.md) — local commands, workflows, review before running APIs, continuity procedure.
 7. [Decision log](07_decisions.md) — architectural and methodological rationale.
 
-The frozen query corpus lives in [`queries/v1.json`](../queries/v1.json). See also [`docs/methodology.md`](../docs/methodology.md), but beware that document still describes the earliest prototype; this guide captures the later observed state. The code, workflow definitions and immutable evidence are authoritative when discrepancies exist.
+The frozen query corpus lives in [`queries/v1.json`](../queries/v1.json). The public-facing [`docs/methodology.md`](../docs/methodology.md) summarizes the current tracks; this guide adds architecture, operations and the dated evidence checkpoint. The code, workflow definitions and source run records are authoritative when discrepancies exist.
 
 ## External planning
 
