@@ -46,6 +46,8 @@ The internal `evidence-merge-v1` format can reconcile multiple captures only whe
 
 For web search, an offline verifier can compare a local capture to a reviewed-style summary using the current canonical URL matcher and top-ten denominator. This is an arithmetic/provenance consistency check, not independent validation that every canonical URL rule or scientific judgment is correct. The current summary has no source hash, so a matching capture cannot by itself prove that it is the historical Actions artifact named in the summary. Gemini recommendation adjudication remains a separate unimplemented reconstruction step.
 
+For Gemini closed-book, a separate offline verifier reproduces only **explicit name mentions** with a versioned text rule. Its denominator includes complete `STOP` answers only; `MAX_TOKENS`, errors and unattempted queries remain missing for this metric. A name occurrence is not evidence of endorsement, technical correctness, external grounding or model training knowledge. Human recommendation and claim adjudication remains pending even if the mention counts reconcile.
+
 ## Proposed adjudication rubric (not yet deployed)
 
 A second-stage reviewer should classify each completed answer as: explicit name mention (exact evidence span), recommended or merely compared, top-ranked or alternative, stated reason, scientifically relevant/irrelevant, accurate/inaccurate/unknown claims, and cited source grounding. Store reviewer identity and disagreements rather than treating automatic string matching as scientific judgment.

@@ -39,6 +39,15 @@ python -m visibility_observatory.evidence_recompute --run /path/to/web-run.json 
 
 This reads only local files and writes an internal hash/check report. A matching report does not prove that the supplied file came from the Actions run URL in the summary, does not review editorial titles or scientific relevance, and does not authorize public release. Do not download historical provider artifacts merely to run this command while retention rights remain unresolved.
 
+The analogous **closed-book Gemini explicit-mention** check is separate from web search and Exa-assisted interpretation:
+
+```bash
+python -m visibility_observatory.evidence_agent_recompute --run /path/to/agent-run.json --summary /path/to/reviewed-agent.summary.json --output /tmp/moli-agent-reconciliation.json
+python -m visibility_observatory.evidence_agent_recompute --run /path/to/agent-run.json --summary /path/to/reviewed-agent.summary.json --check /tmp/moli-agent-reconciliation.json
+```
+
+It reads already-local answers only, reports hashes/check names, and counts mentions in complete responses. It does not adjudicate recommendations or download historical artifacts. Apply the same retention and access-control gate as for web captures.
+
 ## Manual experiments (require consent, validated free-tier quota and secrets)
 
 - `Collect opt-in free-provider baseline`: Tavily/Exa ranked search, limited query count.
