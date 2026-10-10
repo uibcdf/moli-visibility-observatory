@@ -1,0 +1,30 @@
+{
+  "schema_version": "agent-baseline-summary-v1",
+  "date": "2026-10-10",
+  "track": "agent_recommendation",
+  "provider": "google-gemini-api",
+  "model": "gemini-3.1-flash-lite",
+  "mode": "closed_book",
+  "run_url": "https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38052178041",
+  "artifact_url": "https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38052178041/artifacts/11670610334",
+  "benchmark_version": "1.0",
+  "queries_requested": 20,
+  "complete": 20,
+  "partial": 0,
+  "errors": 0,
+  "unattempted": 0,
+  "queries_with_explicit_name_mentions": 0,
+  "explicit_name_mention_rate": 0,
+  "query_ids_with_mentions": [],
+  "match_definition": "Case-insensitive explicit textual occurrence of MolSysMT (including spaced or hyphenated form); no implication of tool endorsement or latent model knowledge.",
+  "response_adjudication": "pending",
+  "limitations": [
+    "Single model, one closed-book run",
+    "Explicit name occurrence, not independent recommendation-quality adjudication",
+    "Different response semantics than Tavily/Exa ranked search",
+    "Source response artifact has limited GitHub retention",
+    "Prompt list contains named alternatives; this affects model output",
+    "No externally grounded fact checking of tool capabilities"
+  ],
+  "notes": "All 20 provider outputs marked complete; final D05 needed two requests after a recoverable 5xx response."
+}
