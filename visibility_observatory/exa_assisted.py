@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import time
 import urllib.error
+import urllib.request
 
 from visibility_observatory.__main__ import ROOT, load
 from visibility_observatory.agent_batch import write_atomic
@@ -31,7 +32,7 @@ def capture(gemini_key, exa_key, benchmark, *, output, model="gemini-3.8-flash",
     for offset,q in enumerate(selected):
         if offset: pause(delay)
         try:
-            found=search("exa",exa_key,q["query"],top_k,None)
+            found=search("exa",exa_key,q["query"],top_k,urllib.request.urlopen)
             # A short retrieval may still provide useful context, but log it explicitly.
             sources=[{"rank":i,"url":s["url"],"title":s["title"]}
                      for i,s in enumerate(found[:top_k],1)]
