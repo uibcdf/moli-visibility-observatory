@@ -36,7 +36,19 @@ jobs:
           EVAL_MODE: ${{ inputs.mode }}
           MAX_QUERIES: ${{ inputs.max_queries }}
         run: python -m visibility_observatory.gemini --mode "$EVAL_MODE" --max-queries "$MAX_QUERIES"
+      - name: Require a complete, nonempty pilot answer
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("build/observations/gemini.json").read_text())
+          samples = report.get("samples", [])
+          if not samples or any(item.get("status") != "complete" for item in samples):
+              raise SystemExit("Gemini returned an incomplete or errored response; inspect artifact.")
+          print(f"Validated {len(samples)} nonempty Gemini response(s)")
+          PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: gemini-unadjudicated-${{ inputs.mode }}
           path: build/observations/gemini.json
