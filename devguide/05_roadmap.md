@@ -24,7 +24,7 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 - [ ] Store run manifests, query IDs, model/provider metadata, source lists and content hashes; immutable run identity. An offline `evidence-manifest-v1` builder now validates IDs/states and hashes exact source/benchmark bytes, but no approved durable store or source-list retention exists.
 - [ ] Validated merge/resume across runs with duplicate/conflict checks and missing-data semantics. An offline `evidence-merge-v1` ledger now reconciles compatible local captures and rejects duplicate or competing complete attempts; automatic cross-workflow resume and approved source retention remain open.
 - [ ] Separate unreviewed raw evidence from reviewed public summaries.
-- **Gate:** raw-to-summary reconstruction validated from a retained run; no dependence on expiring artifacts.
+- **Gate:** raw-to-summary reconstruction validated from a retained run; no dependence on expiring artifacts. An offline web summary verifier now exists and has synthetic tests only; no licensed real source archive or agent-answer adjudication is established.
 
 ## P3 — Exa-assisted and scientific evaluation
 

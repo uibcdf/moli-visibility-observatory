@@ -30,6 +30,15 @@ python -m visibility_observatory.evidence_merge --run /path/to/run-1.json --run 
 
 The command makes no provider requests. It rejects duplicate capture files, incompatible settings and multiple complete attempts for one query. It retains only status/provenance metadata; keep every permitted original capture separately for reconstruction. This is not an automatic retry launcher or a public summary.
 
+To verify a web summary against an already-local capture, after retention rights are cleared, run:
+
+```bash
+python -m visibility_observatory.evidence_recompute --run /path/to/web-run.json --summary /path/to/reviewed.summary.json --output /tmp/moli-reconciliation.json
+python -m visibility_observatory.evidence_recompute --run /path/to/web-run.json --summary /path/to/reviewed.summary.json --check /tmp/moli-reconciliation.json
+```
+
+This reads only local files and writes an internal hash/check report. A matching report does not prove that the supplied file came from the Actions run URL in the summary, does not review editorial titles or scientific relevance, and does not authorize public release. Do not download historical provider artifacts merely to run this command while retention rights remain unresolved.
+
 ## Manual experiments (require consent, validated free-tier quota and secrets)
 
 - `Collect opt-in free-provider baseline`: Tavily/Exa ranked search, limited query count.
