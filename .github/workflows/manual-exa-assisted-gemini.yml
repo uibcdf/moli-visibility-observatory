@@ -8,6 +8,12 @@ on:
         required: true
         default: 'gemini-3.8-flash'
         options: ['gemini-3.8-flash', 'gemini-3.1-flash-lite']
+      category:
+        description: Choose predefined interoperability I01-I05 or manual range
+        type: choice
+        required: true
+        default: 'custom'
+        options: ['custom', 'interoperability']
       count:
         description: API request ceiling per provider (start with one)
         type: choice
@@ -40,9 +46,10 @@ jobs:
           EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MODEL: ${{ inputs.model }}
+          CATEGORY: ${{ inputs.category }}
           COUNT: ${{ inputs.count }}
           START: ${{ inputs.start_index }}
-        run: python -m visibility_observatory.exa_assisted --model "$MODEL" --count "$COUNT" --start-index "$START"
+        run: python -m visibility_observatory.exa_assisted --category "$CATEGORY" --model "$MODEL" --count "$COUNT" --start-index "$START"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
