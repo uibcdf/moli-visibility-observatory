@@ -100,3 +100,11 @@ The manual `Gemini complete benchmark (checkpointed)` workflow now offers two **
 Google's published [pricing](https://ai.google.dev/gemini-api/docs/pricing) lists free-tier text generation for Gemini 3.8 Flash but **Google Search grounding is unavailable on the API free tier**. The repository keeps grounding disabled; no paid/grounded workflow has been enabled. The favorable Gemini-web 3.8 Flash answer with web search is a separate qualitative observation, not a reproducible API record. A future grounded comparison requires explicit billing approval, cost caps and review of terms.
 
 Web discovery, semantic search and model recommendation remain independently reported; no composite consensus score is justified.
+
+## Retrieval-assisted recommendation strategy and future paid option
+
+**Current direction:** combine Gemini 3.8 Flash (using a free API tier where permitted) with results supplied by Exa as evidence context. Retain standalone Tavily and Exa discoverability runs and Gemini closed-book recommendations as distinct experimental tracks. Exa-assisted Gemini is a planned integration, **not yet implemented or validated**. The data must record source URLs, retrieval rank, query, model, run time and separate recommendation judgments.
+
+**Potential future option:** Gemini 3.8 Flash with **native Google Search grounding** through the Gemini API. This may require enabling paid API billing, independently of a Google AI Pro consumer subscription. It is **deferred**, not authorized. Before implementation: verify current pricing/quotas/terms; obtain explicit spending approval; enforce bounded pilot and cost limits; keep native Google-grounded results separate from Exa-assisted and closed-book runs; measure whether added recommendation quality justifies additional costs. Do not activate any billable scheduled workflow by default.
+
+See [roadmap issue #1](https://github.com/uibcdf/moli-visibility-observatory/issues/1).
