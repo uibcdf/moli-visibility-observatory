@@ -11,13 +11,14 @@ from pathlib import Path
 import urllib.error
 import urllib.parse
 import urllib.request
+import time
 
 from visibility_observatory.__main__ import ROOT, load
 
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
-def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_queries=1, opener=None):
+def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_queries=1, opener=None, pause=None):
     if not key:
         raise ValueError("GEMINI_API_KEY missing: no requests will be made")
     if mode not in ("closed_book", "google_search"):
@@ -29,6 +30,7 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
     if not model or "/" in model or "?" in model or "#" in model:
         raise ValueError("Invalid Gemini model identifier")
     opener = opener or urllib.request.urlopen
+    pause = pause or time.sleep
     samples=[]
     for item in benchmark["queries"][:max_queries]:
         prompt=("You are recommending scientific Python software to a researcher. "
@@ -43,8 +45,17 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
             data=json.dumps(payload).encode(),method="POST",
             headers={"x-goog-api-key":key,"Content-Type":"application/json","Accept":"application/json"})
         try:
-            with opener(request,timeout=60) as response:
-                result=json.load(response)
+            attempts = 0
+            while True:
+                attempts += 1
+                try:
+                    with opener(request,timeout=60) as response:
+                        result=json.load(response)
+                    break
+                except urllib.error.HTTPError as transient:
+                    if transient.code not in (502,503,504) or attempts >= 2:
+                        raise
+                    pause(3)
             candidates=result.get("candidates",[])
             if not candidates:
                 raise ValueError("Missing candidates")
@@ -54,11 +65,11 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
             samples.append({"query_id":item["id"],"status":"complete" if answer and first.get("finishReason") == "STOP" else "partial",
                 "answer":answer,"finish_reason":first.get("finishReason"),
                 "grounding_metadata":first.get("groundingMetadata",{}) if mode=="google_search" else None,
-                "usage":result.get("usageMetadata",{})})
+                "usage":result.get("usageMetadata",{}),"attempts":attempts})
         except urllib.error.HTTPError as error:
             # Expose only HTTP status, never request headers or provider error body.
             samples.append({"query_id":item["id"],"status":"error",
-                            "error_type":"HTTPError","http_status":error.code})
+                            "error_type":"HTTPError","http_status":error.code,"attempts":attempts})
             break
         except (urllib.error.URLError,TimeoutError,ValueError,KeyError,TypeError) as error:
             samples.append({"query_id":item["id"],"status":"error","error_type":type(error).__name__})
