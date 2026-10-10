@@ -1,0 +1,43 @@
+name: Capture opt-in Gemini agent recommendations
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Closed-book (no search) or Gemini grounding with Google Search
+        required: true
+        type: choice
+        options:
+          - closed_book
+          - google_search
+      max_queries:
+        description: Maximum API requests (pilot with 1)
+        required: true
+        type: choice
+        default: '1'
+        options:
+          - '1'
+          - '5'
+          - '20'
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Test before API call
+        run: python -m unittest discover -s tests -v
+      - name: Capture unadjudicated agent responses
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EVAL_MODE: ${{ inputs.mode }}
+          MAX_QUERIES: ${{ inputs.max_queries }}
+        run: python -m visibility_observatory.gemini --mode "$EVAL_MODE" --max-queries "$MAX_QUERIES"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gemini-unadjudicated-${{ inputs.mode }}
+          path: build/observations/gemini.json
+          retention-days: 30
