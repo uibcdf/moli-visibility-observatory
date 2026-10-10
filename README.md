@@ -84,3 +84,11 @@ No recurring runs or automatic Pages publication of agent responses are enabled.
 ### Gemini HTTP 404 recovery — 2026-10-10
 
 The initial one-query run returned HTTP 404 for `gemini-2.5-flash-lite`. Google staff publicly documented that newly created projects may lack generation access to 2.5 models, even when those models appear in model listings. We therefore switched the default to the documented stable `gemini-3.1-flash-lite`, which has a text-generation free tier (subject to project quotas). This requires a new one-query run to validate your specific API project; no success is yet claimed. **Google Search grounding has been disabled** in the adapter/workflow because it is not available on that model's free tier; do not infer that all Gemini functionality is free. Sources: https://discuss.ai.google.dev/t/gemini-api-models-list-returns-gemini-2-5-flash-with-generatecontent-support-but-generatecontent-returns-404-not-found/184047 and https://ai.google.dev/gemini-api/docs/pricing .
+
+## Full Gemini benchmark: checkpointed execution
+
+The new manual workflow **Gemini complete benchmark (checkpointed)** executes up to all 20 closed-book queries in one run. It waits 8 seconds between prompts, allows the Gemini adapter's single retry for transient 502/503/504 failures, writes an atomic JSON checkpoint after each query, **continues** after persistent 5xx, and stops on 400/401/403/404/429 (configuration, authorization or quota). Incomplete responses and failed calls remain explicitly in the data and cannot count as non-mentions. The workflow uploads the partial/full checkpoint as an artifact even when the job fails.
+
+It does **not** run automatically or make paid API calls on a schedule. Check free-tier quota before manually starting 20 queries. It does not currently restore a checkpoint across different GitHub Actions runs; it preserves within-run evidence to support future deduplicated merging.
+
+No joint consensus is computed. Tavily and Exa measure separate web-search discoverability, and Gemini measures independent model output. Agent recommendations must be scored and adjudicated separately, rather than being assigned search-engine ranks.
