@@ -68,6 +68,9 @@ class GeminiTests(unittest.TestCase):
     def test_bad_start_offset(self):
         with self.assertRaises(ValueError):
             collect("secret",BENCH,start_index=1)
+    def test_timeout_budget_for_assisted_context(self):
+        from visibility_observatory.gemini import REQUEST_TIMEOUT_SECONDS
+        self.assertEqual(REQUEST_TIMEOUT_SECONDS, 120)
     def test_bad_limits(self):
         with self.assertRaises(ValueError):
             collect("secret",BENCH,max_queries=21)
