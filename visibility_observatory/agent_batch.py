@@ -57,6 +57,7 @@ def run_batch(key, benchmark, *, output, model=DEFAULT_MODEL, start_index=0,
 
 def main():
     p=argparse.ArgumentParser()
+    p.add_argument("--model",choices=("gemini-3.1-flash-lite","gemini-3.8-flash"),default="gemini-3.8-flash")
     p.add_argument("--start-index",type=int,default=0)
     p.add_argument("--count",type=int,default=20)
     p.add_argument("--delay-seconds",type=int,default=8)
@@ -64,7 +65,7 @@ def main():
     args=p.parse_args()
     if not 0 <= args.delay_seconds <= 120: p.error("Invalid delay")
     result=run_batch(os.environ.get("GEMINI_API_KEY"),load(ROOT/"queries/v1.json"),
-                     output=args.output,start_index=args.start_index,
+                     output=args.output,model=args.model,start_index=args.start_index,
                      count=args.count,delay=args.delay_seconds)
     print(json.dumps({k:result[k] for k in ("complete_count","failed_count","unattempted_count","all_complete")}))
     # Nonzero exit for incomplete benchmark, but artifacts remain available.
