@@ -1,0 +1,51 @@
+name: Gemini + Exa assisted pilot
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: API model (check free-tier quota first)
+        type: choice
+        required: true
+        default: 'gemini-3.8-flash'
+        options: ['gemini-3.8-flash', 'gemini-3.1-flash-lite']
+      count:
+        description: API request ceiling per provider (start with one)
+        type: choice
+        required: true
+        default: '1'
+        options: ['1', '5', '20']
+      start_index:
+        description: First benchmark query index
+        type: choice
+        required: true
+        default: '0'
+        options: ['0', '5', '10', '15']
+permissions:
+  contents: read
+concurrency:
+  group: exa-assisted-gemini-manual
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m unittest discover -s tests -v
+      - name: Run Exa-assisted Gemini evaluation
+        env:
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODEL: ${{ inputs.model }}
+          COUNT: ${{ inputs.count }}
+          START: ${{ inputs.start_index }}
+        run: python -m visibility_observatory.exa_assisted --model "$MODEL" --count "$COUNT" --start-index "$START"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exa-assisted-${{ github.run_id }}
+          path: build/observations/exa-assisted.json
+          retention-days: 30
