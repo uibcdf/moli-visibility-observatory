@@ -37,3 +37,23 @@ A real provider adapter is now included (`visibility_observatory/brave.py`) but 
 **To start an explicitly authorized first baseline:** GitHub → repository **Settings → Secrets and variables → Actions** → New repository secret `BRAVE_SEARCH_API_KEY`; then Actions → **Collect opt-in Brave baseline** → Run workflow. The workflow uploads a temporary artifact containing recorded results and HTML; it does **not** publish Pages or schedule future API calls. Results must be reviewed for completeness, provider licensing and representativeness before public publication. Prefer configuring required reviewers on the `visibility-data-collection` environment if supported.
 
 This adapter measures **search result presence, not agent recommendations**. Provider response count and rankings can vary by locale/time. The manual workflow has not been independently verified running in GitHub Actions.
+
+## Free-tier candidate providers (manual opt-in)
+
+Tavily and Exa adapters are available alongside the existing optional Brave connector.
+They are **not enabled automatically** and their search results are **not AI-agent recommendations**.
+
+1. Obtain a free-tier API key from [Tavily](https://www.tavily.com/) and/or [Exa](https://exa.ai/), subject to their current terms, account verification and allowed research/publication uses.
+2. Save `TAVILY_API_KEY` or `EXA_API_KEY` at GitHub repository **Settings → Secrets and variables → Actions**. Never commit keys or paste them in issues.
+3. Open **Actions → Collect opt-in free-provider baseline → Run workflow**. Select a provider; start with **1 query**, review the resulting artifact and API account usage, then run 20 if acceptable.
+4. A completed 20-query run produces an observation JSON and a static HTML preview artifact. No cron or public Pages publishing is configured. The provider might return fewer than 10 results, and those samples will remain **unevaluable**.
+
+CLI alternatives:
+
+```bash
+TAVILY_API_KEY=... python -m visibility_observatory.providers --provider tavily --max-queries 1
+EXA_API_KEY=... python -m visibility_observatory.providers --provider exa --max-queries 1
+python -m visibility_observatory --run build/observations/tavily.json --output build/tavily-site
+```
+
+**Budget and semantics:** each collector run makes at most the `--max-queries` configured search requests; Tavily uses basic search and Exa uses auto search. Free-tier credits and provider terms can change. Do not assume both ranked lists or presence@10 results are interchangeable. Calls are sequential and have no automated retries. Provider errors are recorded without exposing API keys.
