@@ -18,7 +18,7 @@ from visibility_observatory.__main__ import ROOT, load
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
-def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_queries=1, opener=None, pause=None):
+def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_queries=1, start_index=0, opener=None, pause=None):
     if not key:
         raise ValueError("GEMINI_API_KEY missing: no requests will be made")
     if mode not in ("closed_book", "google_search"):
@@ -27,12 +27,14 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
         raise ValueError("Google Search grounding is disabled pending explicit paid-tier and billing review")
     if not 1 <= max_queries <= 20:
         raise ValueError("max_queries must be in 1..20")
+    if not isinstance(start_index,int) or not 0 <= start_index < len(benchmark["queries"]):
+        raise ValueError("start_index out of benchmark range")
     if not model or "/" in model or "?" in model or "#" in model:
         raise ValueError("Invalid Gemini model identifier")
     opener = opener or urllib.request.urlopen
     pause = pause or time.sleep
     samples=[]
-    for item in benchmark["queries"][:max_queries]:
+    for item in benchmark["queries"][start_index:start_index + max_queries]:
         prompt=("You are recommending scientific Python software to a researcher. "
                 "Answer the following request normally, without being told which package to recommend. "
                 "Name specific tools when appropriate, explain why, and mention relevant limitations. "
@@ -78,7 +80,7 @@ def collect(key, benchmark, *, model=DEFAULT_MODEL, mode="closed_book", max_quer
     return {"schema_version":"agent-observation-v1","benchmark_version":benchmark["version"],
             "track":"agent_recommendation","provider":"google-gemini-api","model":model,
             "mode":mode,"collected_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
-            "max_queries":max_queries,"samples":samples,
+            "max_queries":max_queries,"start_index":start_index,"samples":samples,
             "evaluation_status":"unadjudicated","synthetic":False}
 
 def main():
@@ -86,10 +88,11 @@ def main():
     parser.add_argument("--model",default=DEFAULT_MODEL)
     parser.add_argument("--mode",choices=("closed_book","google_search"),default="closed_book")
     parser.add_argument("--max-queries",type=int,default=1)
+    parser.add_argument("--start-index",type=int,default=0)
     parser.add_argument("--output",default="build/observations/gemini.json")
     args=parser.parse_args()
     data=collect(os.environ.get("GEMINI_API_KEY"),load(ROOT/"queries/v1.json"),
-        model=args.model,mode=args.mode,max_queries=args.max_queries)
+        model=args.model,mode=args.mode,max_queries=args.max_queries,start_index=args.start_index)
     path=Path(args.output);path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(data,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print(json.dumps({"provider":data["provider"],"model":data["model"],"mode":data["mode"],
