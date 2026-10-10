@@ -58,6 +58,16 @@ class GeminiTests(unittest.TestCase):
         result = collect("secret", BENCH, opener=fail, pause=lambda _: None)
         self.assertEqual(len(calls), 2)
         self.assertEqual(result["samples"][0]["http_status"], 503)
+    def test_start_offset_preserves_original_query_ids(self):
+        bench={"version":"1.0","queries":[{"id":"G01","query":"one"},{"id":"G02","query":"two"},{"id":"G03","query":"three"}]}
+        def mock(req,timeout):
+            return Response(b'{"candidates":[{"content":{"parts":[{"text":"MDAnalysis"}]},"finishReason":"STOP"}]}')
+        result=collect("secret",bench,start_index=2,max_queries=1,opener=mock)
+        self.assertEqual(result["samples"][0]["query_id"],"G03")
+        self.assertEqual(result["start_index"],2)
+    def test_bad_start_offset(self):
+        with self.assertRaises(ValueError):
+            collect("secret",BENCH,start_index=1)
     def test_bad_limits(self):
         with self.assertRaises(ValueError):
             collect("secret",BENCH,max_queries=21)
