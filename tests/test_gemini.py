@@ -39,6 +39,25 @@ class GeminiTests(unittest.TestCase):
         self.assertEqual(sample["http_status"], 429)
         self.assertEqual(sample["error_type"], "HTTPError")
         self.assertNotIn("private provider details", json.dumps(result))
+    def test_transient_503_retries_once(self):
+        calls = []
+        def transport(req, timeout):
+            calls.append(1)
+            if len(calls) == 1:
+                raise urllib.error.HTTPError(req.full_url, 503, "temporary", {}, None)
+            return Response(b'{"candidates":[{"content":{"parts":[{"text":"MDAnalysis"}]},"finishReason":"STOP"}]}')
+        result = collect("secret", BENCH, opener=transport, pause=lambda _: None)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(result["samples"][0]["status"], "complete")
+        self.assertEqual(result["samples"][0]["attempts"], 2)
+    def test_persistent_503_stops_after_two(self):
+        calls = []
+        def fail(req, timeout):
+            calls.append(1)
+            raise urllib.error.HTTPError(req.full_url, 503, "temporary", {}, None)
+        result = collect("secret", BENCH, opener=fail, pause=lambda _: None)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(result["samples"][0]["http_status"], 503)
     def test_bad_limits(self):
         with self.assertRaises(ValueError):
             collect("secret",BENCH,max_queries=21)
