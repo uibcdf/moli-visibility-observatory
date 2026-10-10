@@ -18,7 +18,9 @@ on:
           - '2'
           - '3'
           - '5'
+          - '8'
           - '10'
+          - '13'
           - '15'
       max_queries:
         description: Maximum API requests (pilot with 1)
