@@ -1,0 +1,41 @@
+name: V2 private one-query pilot
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: One V2 S02A experiment; no automatic publication
+        required: true
+        type: choice
+        options: [tavily, exa, gemini_closed, gemini_exa]
+permissions:
+  contents: read
+concurrency:
+  group: v2-private-pilot
+  cancel-in-progress: false
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Validate before API use
+        run: python -m unittest discover -s tests -v
+      - name: One bounded experiment; encrypt capture
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TRACK: ${{ inputs.track }}
+          PYTHONWARNINGS: ignore::ResourceWarning
+        run: python -m visibility_observatory.v2_private_pilot --track "$TRACK" --output build/private-pilot/capture.p7m
+      - name: Upload encrypted capture only
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-private-${{ inputs.track }}-${{ github.run_id }}
+          path: build/private-pilot/capture.p7m
+          retention-days: 7
+          if-no-files-found: error
