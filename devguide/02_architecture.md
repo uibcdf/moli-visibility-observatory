@@ -4,7 +4,7 @@
 
 ```text
 queries/v1.json                       frozen 20 unbranded queries (G/I/S/D)
-queries/v2.json                       frozen 48-prompt, four-stratum question protocol; no captures
+queries/v2.json                       frozen 48-prompt, four-stratum question protocol; partial private captures
 visibility_observatory/benchmark_v2.py offline V2 design validator
 visibility_observatory/benchmark_run.py offline frozen-byte loader and three-segment V2 plan
 visibility_observatory/v2_analysis.py internal separate-stratum analysis of local V2 captures
@@ -24,7 +24,7 @@ data/baselines/                     reviewed Tavily and Exa compact web summarie
 data/agent-baselines/               reviewed Gemini closed-book compact summary
 examples/                           synthetic fixtures, never observational evidence
 tests/                              standard-library unittest tests
-.github/workflows/                   validation, manual provider captures, Pages publishing
+.github/workflows/                   validation, V1 collection, encrypted private V2 collection, Pages publishing
 ```
 
 Main data paths:
@@ -58,9 +58,11 @@ Gemini closed-book stores `agent-observation-v1`, model, mode, prompt benchmark 
 
 The `validate.yml` workflow runs tests and builds a clearly synthetic preview on push and pull request. `pages.yml` deploys reviewed summaries on relevant pushes or manual dispatch. Provider workflows use manual dispatch only: Tavily/Exa can request 1, 5 or 20 queries; Brave requests all 20; Gemini closed-book can request 1, 5 or 20 and retry a transient 5xx once per query; Exa-assisted defaults to one query or explicitly selects I01–I05. These workflows can consume provider quota and must not be triggered during a documentation or test audit. The code does not enforce an account-level spending cap or inspect remaining quota.
 
+The separate manual V2 private workflow accepts one track and a bounded contiguous range of the frozen V2 corpus. It encrypts captures before uploading seven-day Actions artifacts; the decryption key stays in ignored local `.private/`. It currently permits Tavily, Exa and up to five Gemini closed-book questions per dispatch. Gemini+Exa is disabled pending rights clarification. These artifacts are temporary evidence, not a durable licensed archive or Pages input. See the [current checkpoint](04_checkpoint.md) for observed runs and missingness.
+
 The provider configuration, prompt profile and benchmark **all affect comparability**. Current Gemini `concise-v2` changes instruction length and output budget; it is not identical to earlier runs. `gemini.py` includes `protocol_version` and `output_token_limit` in direct captures; new `agent_batch.py` checkpoints copy those constants into the outer record before the first request. New `exa_assisted.py` captures now also include both fields. Earlier artifacts, including [the Gemini 3.1 baseline](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38052178041), were not rewritten; their protocol identity still depends on code/run provenance and missing fields cause the offline merge to reject them. Source URLs are not source page bodies: the current Exa-assisted implementation only supplies titles and URLs. A source may be stale or misleading.
 
-The V2 file adds `stratum`, `intent_id`, `variant`, `language`, `expected_scope` and optional `paired_with` to each `id`/`query`. `benchmark_run.py` checks exact frozen V1/V2 bytes and prints V2's three contiguous segments (20/20/8) without network access. Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs now accept an explicit benchmark version and segment; V2 requires `--execute-v2`, while the default and every manual Actions workflow remain V1. Their new captures include a source-file SHA-256; web and assisted captures also state the start index and requested query IDs. The manifest rejects a V2 capture without a matching hash or with IDs inconsistent with the declared segment. Existing historical artifacts are not rewritten. The old web metric renderer deliberately rejects V2 to prevent a pooled 48-prompt score. `v2_analysis.py` reads compatible, already-local captures and writes an **internal, unreviewed** per-stratum summary without answers or URLs. It keeps web presence, closed-book name mentions and Exa-assisted name mentions distinct, preserves missingness and requires both A/B observations for intent comparisons. Recommendation quality and reviewed public publication are separate remaining work, subject to rights and scientific review.
+The V2 file adds `stratum`, `intent_id`, `variant`, `language`, `expected_scope` and optional `paired_with` to each `id`/`query`. `benchmark_run.py` checks exact frozen V1/V2 bytes and prints V2's three contiguous segments (20/20/8) without network access. Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs accept an explicit benchmark version and segment; V2 requires `--execute-v2` locally. Their default and the original manual Actions workflows remain V1; the dedicated private V2 workflow is described above. New captures include a source-file SHA-256; web and assisted captures also state the start index and requested query IDs. The manifest rejects a V2 capture without a matching hash or with IDs inconsistent with the declared segment. Existing historical artifacts are not rewritten. The old web metric renderer deliberately rejects V2 to prevent a pooled 48-prompt score. `v2_analysis.py` reads compatible, already-local captures and writes an **internal, unreviewed** per-stratum summary without answers or URLs. It keeps web presence, closed-book name mentions and Exa-assisted name mentions distinct, preserves missingness and requires both A/B observations for intent comparisons. Recommendation quality and reviewed public publication are separate remaining work, subject to rights and scientific review.
 
 ## Known architectural debt
 

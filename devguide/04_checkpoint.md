@@ -1,6 +1,16 @@
-# State checkpoint — 2026-10-10
+# State checkpoint — current snapshot 2026-10-11
 
-**Repository:** `uibcdf/moli-visibility-observatory`. This is a dated checkpoint, not a claim about future runs. Refresh from GitHub Actions and authoritative files before new work.
+**Repository:** `uibcdf/moli-visibility-observatory`. Read this snapshot first; the dated sections below preserve earlier states and may contain statements that were true only then. Refresh from GitHub Actions and authoritative files before new work.
+
+## Current state and next step — 2026-10-11
+
+- **Code and CI:** `main` at `940b652`; [hosted validation 38127618649](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38127618649) succeeded for that commit. The local suite passed 68 tests before this documentation update. No API call is part of validation.
+- **Public site:** the [web data](https://www.uibcdf.org/moli-visibility-observatory/baselines.json) and [agent data](https://www.uibcdf.org/moli-visibility-observatory/agent-baselines.json) checked on 2026-10-11 contain reviewed V1 summaries only. V2 has no approved public summary or Pages deployment.
+- **Private V2:** one completed `S02A` observation each for [Tavily](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38126337596) and [Exa](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38126385153), separately. Five Gemini closed-book captures, including the earlier `S02A` pilot, reconcile to 20 complete, 2 errors and 26 unattempted of 48 prompts; the 30-prompt primary stratum has 11 complete, 2 errors and 17 unattempted. The [latest stage](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38127443934) stopped at HTTP 429. The exact limit dimension is unknown, and no later Gemini call has been made. These are completeness counts, not recommendation rates; the timeout and 429 are missing evidence.
+- **Evidence and rights:** V2 captures were encrypted in seven-day Actions artifacts and decrypted locally outside Git. This is not a durable licensed archive. Tavily/Exa publication and retention rights remain unresolved against account terms; the Exa-assisted track is deferred because passing Exa titles/URLs to Gemini needs clarification under [Exa terms §4.2(a)](https://exa.ai/assets/Exa_Labs_Terms_of_Service.pdf). Automated mention analysis is internal and unreviewed.
+- **Next:** inspect the active Gemini quota/reset in AI Studio before any further bounded run; establish applicable provider retention/publication rights, a durable evidence store and human recommendation adjudication. Then build and verify separate reviewed V2 summaries by track and stratum for the website. No paid or recurring collection is authorized. See the [roadmap](05_roadmap.md) for gates and [operations](06_operations.md) for procedures.
+
+**Historical record below (begins 2026-10-10).** Earlier status and next-step statements are retained as a dated work log.
 
 ## Verified experimental observations
 

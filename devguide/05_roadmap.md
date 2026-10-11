@@ -2,6 +2,8 @@
 
 This roadmap guides priorities; current blockers and validated run evidence are in [checkpoint](04_checkpoint.md). Issue #1 holds global planning and #2 implementation tracking.
 
+**Current priority (2026-10-11):** V2 has partial private evidence, while the website still serves V1. Pause additional Gemini collection after the observed 429 until the active quota/reset is understood. Resolve search-provider rights and durable retention, adjudicate completed answers, and create reviewed V2 summaries by track and stratum before a public release. The Gemini+Exa experiment needs permission to pass Exa result metadata to Google.
+
 ## P0 — documentation and audit (immediate)
 
 - [x] Establish developer guide as source of durable intent and checkpoint.
@@ -13,9 +15,9 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 ## P1 — stabilize measurement contracts and quota handling
 
 - [ ] Formalize provider version/configuration, complete/error/partial states, output token profile and explicit denominators. New closed-book batch checkpoints now record the prompt protocol and output token limit; historical runs and remaining fields still need review.
-- [ ] Gemini 3.8: verify actual free-tier limits, 429 responses, rate limiting, backoff and fail-closed conditions.
+- [ ] Gemini 3.8: determine the active free-tier quota/reset and limit dimension after the V2 429; verify rate limiting, backoff and fail-closed conditions. The observed 429 alone does not identify RPM, TPM or RPD.
 - [ ] Improve transport timeouts and error categorization; do not silently hide failed queries.
-- [ ] Validate 1-query then bounded multi-query pilot for concise-v2 and Exa-assisted.
+- [ ] Review the completed one-query and bounded multi-query closed-book pilots; validate Exa-assisted only after the Exa metadata-transfer rights are clarified.
 - **Gate:** test evidence plus at least one complete live bounded assisted pilot; no unexpected spending.
 
 ## P2 — durable, verifiable evidence
@@ -28,10 +30,11 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 
 ## P3 — Exa-assisted and scientific evaluation
 
-- [x] Freeze the offline V2 question protocol: 15 paired primary intents plus separate six-question control, named-alternative and Spanish strata. Structural validator and byte hash guard the corpus; no V2 provider measurements exist.
-- [x] Prepare offline 20/20/8 V2 segment plan; add bounded segment selection and exact benchmark-byte provenance to Tavily/Exa, checkpointed Gemini and Exa-assisted capture paths. Their manual Actions workflows still use V1; no V2 API call has occurred.
-- [x] Add local, unreviewed V2 analysis by stratum and compatible track, with paired A/B and named-alternative/Spanish descriptions, retaining missingness. Synthetic tests only; no public V2 metric.
-- [ ] Before V2 activation, review scientific wording with domain maintainers, applicable account terms, quota and retention rights; run a bounded authorized pilot. Human adjudication and permitted source provenance remain necessary before any public V2 metric.
+- [x] Freeze the V2 question protocol: 15 paired primary intents plus separate six-question control, named-alternative and Spanish strata. Structural validator and byte hash guard the corpus; partial private observations now exist.
+- [x] Prepare the offline 20/20/8 V2 segment plan and bounded selection with exact benchmark-byte provenance. Original manual collection workflows remain V1; a separate manual encrypted V2 workflow has run.
+- [x] Add local, unreviewed V2 analysis by stratum and compatible track, retaining missingness. It has analyzed private V2 captures; no public V2 metric follows.
+- [x] Run bounded authorized V2 pilots separately: Tavily, Exa and Gemini closed-book completed `S02A`; later Gemini closed-book stages encountered a timeout and HTTP 429. See the checkpoint for run URLs and denominators.
+- [ ] Review scientific wording with domain maintainers, applicable account terms, quota and retention rights. Human adjudication and permitted source provenance remain necessary before any public V2 metric.
 - [ ] Review relevance of the Exa top-five source set; assess whether titles/URLs suffice versus licensed snippets/content.
 - [ ] Complete controlled same-model `closed_book` vs `exa_assisted` under matched concise-v2 settings.
 - [ ] Adjudicate mention versus recommendation, ranking and technical correctness; track older MolSysMT versions.

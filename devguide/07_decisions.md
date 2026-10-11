@@ -24,6 +24,8 @@ This file preserves why the Observatory works as it does. Add dated decisions ra
 | 2026-10-11 | Prepare V2 segments without activating live workflows | Use a fixed 20/20/8 plan, exact corpus SHA-256 in new captures, an explicit V2 CLI switch and manifest checks for contiguous IDs. Keep Actions on V1 and reject V2 in the old pooled web renderer until stratum-aware analysis and rights review are complete. |
 | 2026-10-11 | Analyze V2 strata only from compatible, local captures | Reuse exact-byte manifests and conflict checks, report web URL presence or model name occurrence by stratum and paired intent, and retain missingness. Keep the derivative internal; no automatic recommendation or publication claim. |
 | 2026-10-11 | Propose an S02A one-query V2 pilot, pending owner/account review | Test the same unbranded primary intent across four separately recorded experiments with bounded request ceilings. Public provider terms and generic rate limits do not establish this project's remaining quota or permission to retain/publish output. |
+| 2026-10-11 | Run bounded free-tier V2 pilots with encrypted temporary evidence | Owner authorized internal bounded tests. Keep Tavily, Exa and Gemini closed-book as separate tracks; encrypt seven-day Actions artifacts, decrypt locally and retain errors/unattempted states. This authorizes neither publication nor paid/recurring use. See the live run URLs in the checkpoint. |
+| 2026-10-11 | Stop Gemini collection after V2 HTTP 429; defer Gemini+Exa | The limit dimension is unknown; inspect project quota/reset before further calls. Exa result metadata would be sent to Google in the assisted track, so clarify applicable Exa rights first. The website continues to show reviewed V1 only. |
 
 ## Future decision candidates
 

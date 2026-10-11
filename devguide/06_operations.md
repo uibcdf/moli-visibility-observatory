@@ -12,13 +12,13 @@ python -m http.server 8000 --directory build/public-site
 
 Python standard library is sufficient for current commands. Check packaging and Python compatibility before changing dependencies. Do **not** use actual API credentials in unit tests.
 
-The V2 question corpus is frozen but has **no live results**. Validate its schema, strata, pairs and exact SHA-256 offline with:
+The V2 question corpus is frozen and has partial private observations (see the [current checkpoint](04_checkpoint.md)). Validate its schema, strata, pairs and exact SHA-256 offline with:
 
 ```bash
 python -m visibility_observatory.benchmark_v2
 ```
 
-The output should report 30 primary, 6 control, 6 named-alternative and 6 Spanish prompts with SHA-256 `fab3c490c1ff158f0ae4528bf147c8aea216da527c2d65e5e4f4330315ee6335`. V1 remains the default of all manual collection workflows. Do not pass V2 to a live client until the activation gates in [methodology](03_methodology.md) are met.
+The output should report 30 primary, 6 control, 6 named-alternative and 6 Spanish prompts with SHA-256 `fab3c490c1ff158f0ae4528bf147c8aea216da527c2d65e5e4f4330315ee6335`. The original manual collection workflows still default to V1; the dedicated private V2 workflow has separate limits. See the [methodology](03_methodology.md) and checkpoint before any further live collection.
 
 Preview the exact V2 collection order and three bounded segments without credentials or network calls:
 
@@ -26,7 +26,7 @@ Preview the exact V2 collection order and three bounded segments without credent
 python -m visibility_observatory.benchmark_run
 ```
 
-The plan lists `(start_index, count)` as `(0, 20)`, `(20, 20)` and `(40, 8)`, each with original query IDs and the frozen file hash. The Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs accept `--benchmark-version v2` and the relevant start/count arguments, but refuse V2 without `--execute-v2`. This switch only prevents accidental local invocation; the owner must still approve a bounded live plan after checking the applicable account terms, quotas and retention rights. Existing manual Actions workflows remain V1 and have no V2 option. Do not feed V2 captures into the existing web metric renderer: it rejects pooled V2 scoring.
+The plan lists `(start_index, count)` as `(0, 20)`, `(20, 20)` and `(40, 8)`, each with original query IDs and the frozen file hash. The Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs accept `--benchmark-version v2` and the relevant start/count arguments, but refuse V2 without `--execute-v2`. This switch prevents accidental local invocation; check the authorization, quota status and rights for any new bounded live plan. The original manual Actions workflows remain V1; the dedicated private V2 workflow is described below. Do not feed V2 captures into the existing web metric renderer: it rejects pooled V2 scoring.
 
 Once source retention is permitted, an **offline, internal** V2 analysis of already-local captures from one compatible provider/mode can be written with:
 
@@ -36,15 +36,15 @@ python -m visibility_observatory.v2_analysis --run /path/to/segment-1.json --run
 
 The command makes no provider requests. It rejects conflicting complete attempts or mixed tracks/settings, leaves missing observations unevaluable, and reports each stratum and paired comparison separately. For model output it counts only explicit name occurrences; recommendation quality and technical correctness need human review. The report is marked `internal_unreviewed`, omits source URLs and answers, and must not be fed to Pages or published before rights and scientific review.
 
-### Proposed first V2 pilot; not authorized
+### First V2 pilot plan — completed in part
 
-Use the frozen **primary, unbranded** query `S02A` at zero-based index `1`, one question per experiment: Tavily ranked search, Exa ranked search, Gemini 3.8 Flash closed-book, and Gemini 3.8 Flash with Exa titles/URLs. Run one experiment at a time, inspect its checkpoint/status and provider usage, and stop at a 429 or other nonretryable error. If all four are explicitly approved and attempted, the ceiling is one Tavily request, two Exa requests (one direct plus one assisted), and up to four Gemini requests (one closed-book and one assisted call, each with at most one existing 5xx retry). No second V2 question or larger segment is part of this pilot. Do not publish pilot output automatically.
+The initial plan used frozen **primary, unbranded** `S02A` at zero-based index `1`, one question per experiment: Tavily ranked search, Exa ranked search, Gemini 3.8 Flash closed-book, and Gemini 3.8 Flash with Exa titles/URLs. The first three tracks ran separately; the assisted track remains deferred because the Exa result metadata would be sent to Google. Later bounded Gemini closed-book stages ran and stopped at HTTP 429. See the dated run evidence in the [checkpoint](04_checkpoint.md). No pilot output was published automatically.
 
-Before invoking any `--execute-v2` command, the project owner must verify the actual Tavily/Exa account or order terms for capture/retention and public metrics, inspect remaining credits and rate limits in those accounts, and inspect the Gemini project's tier, model availability and RPM/TPM/RPD in AI Studio. Obtain explicit authorization for the selected experiment and its request ceiling. [Tavily terms](https://www.tavily.com/terms), [Exa terms](https://exa.ai/assets/Exa_Labs_Terms_of_Service.pdf), [Gemini rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) and [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing) are public references; they do not establish account-specific permission or free capacity. Never send secrets to chat or commit them.
+Before further `--execute-v2` collection, verify actual Tavily/Exa account or order terms for capture/retention and public metrics, remaining credits and limits, and the Gemini project's active RPM/TPM/RPD and reset in AI Studio. The owner authorized bounded free-tier internal tests, but that does not approve paid calls, publication or recurring runs. [Tavily terms](https://www.tavily.com/terms), [Exa terms](https://exa.ai/assets/Exa_Labs_Terms_of_Service.pdf), [Gemini rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) and [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing) are public references; they do not establish account-specific permission or free capacity. Never send secrets to chat or commit them.
 
 For a read-only account check, Tavily documents `GET /usage`, which returns key and account usage/limits. [Exa billing](https://exa.ai/docs/admin/billing) directs users to its billing dashboard for the current credit balance; its documented [Get team info](https://exa.ai/docs/websets/api/teams/get-team-info) endpoint reports Websets concurrency, **not** available search credits. Exa's [API-key usage endpoint](https://exa.ai/docs/reference/team-management/get-api-key-usage) needs a separately enabled team-management service key and reports historical spending, not the current balance. [Gemini active rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) and [billing/usage](https://ai.google.dev/gemini-api/docs/billing/) are project-specific views in AI Studio. Public free-tier tables cannot establish this project's remaining capacity.
 
-Access audit on 2026-10-11: this local environment had no Tavily, Exa or Gemini API key variables; GitHub reported no repository-level Actions secrets/variables, and the organization-secret listing returned HTTP 403 for the available token. Organization secrets may still be supplied to Actions; the audit does not establish their absence. No authenticated provider usage endpoint or billing dashboard was accessed, and no provider request was made. To clear the pilot gate, use authorized read-only account/dashboard access or provide redacted current quota and applicable agreement details, then authorize the exact provider(s) and request ceiling. Do not put account usage, terms or raw API responses in public Actions logs/artifacts.
+Access audit before the live pilots on 2026-10-11: this local environment had no Tavily, Exa or Gemini API key variables; GitHub reported no repository-level Actions secrets/variables, and the organization-secret listing returned HTTP 403 for the available token. Organization secrets may still be supplied to Actions; the audit does not establish their absence. At that point no authenticated provider usage endpoint or billing dashboard was accessed, and no provider request had been made. The later Actions pilots show that credentials were available to those jobs, but do not reveal current account limits or applicable agreement details. Do not put account usage, terms or raw API responses in public Actions logs/artifacts.
 
 ### Private bounded V2 collection
 

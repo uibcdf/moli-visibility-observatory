@@ -1,6 +1,6 @@
 # Developer guide — MOLI Visibility Observatory
 
-**Checkpoint:** 2026-10-10. **Status:** research prototype with working public site and several real provider observations; NOT a fully automated longitudinal monitoring service.
+**Checkpoint:** 2026-10-11. **Status:** research prototype with a public V1 site and partial, private V2 observations. Collection is manual; V2 is not published.
 
 This directory is the durable onboarding, architecture, methodology, execution and roadmap entry point for developers and Codex agents. Read it before making code changes.
 
@@ -14,7 +14,7 @@ This directory is the durable onboarding, architecture, methodology, execution a
 6. [Operations and handoff](06_operations.md) — local commands, workflows, review before running APIs, continuity procedure.
 7. [Decision log](07_decisions.md) — architectural and methodological rationale.
 
-The measured frozen V1 query corpus lives in [`queries/v1.json`](../queries/v1.json); a separate, unrun V2 protocol is frozen in [`queries/v2.json`](../queries/v2.json). The public-facing [`docs/methodology.md`](../docs/methodology.md) summarizes the current tracks; this guide adds architecture, operations and the dated evidence checkpoint. The code, workflow definitions and source run records are authoritative when discrepancies exist.
+The measured frozen V1 query corpus lives in [`queries/v1.json`](../queries/v1.json); the separate V2 protocol is frozen in [`queries/v2.json`](../queries/v2.json) and has partial private observations. The [checkpoint](04_checkpoint.md) starts with the current snapshot; later sections preserve the dated work history. The public-facing [`docs/methodology.md`](../docs/methodology.md) summarizes the current tracks; the code, workflow definitions and source run records are authoritative when discrepancies exist.
 
 ## External planning
 
