@@ -6,14 +6,14 @@ on:
         description: One V2 experiment; no automatic publication
         required: true
         type: choice
-        options: [tavily, exa, gemini_closed, gemini_exa]
+        options: [tavily, exa, gemini_closed]
       start_index:
         description: Frozen V2 zero-based first index (0-47)
         required: true
         type: number
         default: 1
       count:
-        description: Maximum consecutive questions (1-20); stop on nonretryable errors
+        description: Maximum questions (1-20 web, 1-5 Gemini); stop on quota errors
         required: true
         type: number
         default: 1
@@ -25,7 +25,7 @@ concurrency:
 jobs:
   pilot:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

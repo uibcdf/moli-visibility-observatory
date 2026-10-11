@@ -11,12 +11,11 @@ import tempfile
 
 from visibility_observatory.agent_batch import run_batch
 from visibility_observatory.benchmark_run import load_frozen, segment
-from visibility_observatory.exa_assisted import capture
 from visibility_observatory.providers import collect
 
 
 CERT = Path(__file__).resolve().parents[1] / ".github/v2-pilot/recipient-cert.pem"
-TRACKS = ("tavily", "exa", "gemini_closed", "gemini_exa")
+TRACKS = ("tavily", "exa", "gemini_closed")
 
 
 def run_segment(track, start_index, count, output):
@@ -25,6 +24,8 @@ def run_segment(track, start_index, count, output):
     benchmark, digest = load_frozen("v2")
     if type(start_index) is not int or type(count) is not int or not 1 <= count <= 20:
         raise ValueError("Invalid bounded V2 segment")
+    if track == "gemini_closed" and count > 5:
+        raise ValueError("Gemini stages are limited to five questions")
     selected = segment(benchmark, start_index, count)
     if start_index == 1 and selected[0]["id"] != "S02A":
         raise ValueError("Pilot query identity changed")
@@ -41,10 +42,6 @@ def run_segment(track, start_index, count, output):
             run_batch(os.environ.get("GEMINI_API_KEY"), benchmark, output=raw,
                       model="gemini-3.8-flash", start_index=start_index, count=count,
                       benchmark_sha256=digest)
-        else:
-            capture(os.environ.get("GEMINI_API_KEY"), os.environ.get("EXA_API_KEY"),
-                    benchmark, output=raw, model="gemini-3.8-flash",
-                    start_index=start_index, count=count, benchmark_sha256=digest)
         subprocess.run(["openssl", "cms", "-encrypt", "-binary", "-aes-256-cbc",
                         "-in", str(raw), "-outform", "DER", "-out", str(output),
                         str(CERT)], check=True, stdout=subprocess.DEVNULL,
