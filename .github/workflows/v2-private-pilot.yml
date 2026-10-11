@@ -1,12 +1,22 @@
-name: V2 private one-query pilot
+name: V2 private bounded collection
 on:
   workflow_dispatch:
     inputs:
       track:
-        description: One V2 S02A experiment; no automatic publication
+        description: One V2 experiment; no automatic publication
         required: true
         type: choice
         options: [tavily, exa, gemini_closed, gemini_exa]
+      start_index:
+        description: Frozen V2 zero-based first index (0-47)
+        required: true
+        type: number
+        default: 1
+      count:
+        description: Maximum consecutive questions (1-20); stop on nonretryable errors
+        required: true
+        type: number
+        default: 1
 permissions:
   contents: read
 concurrency:
@@ -29,8 +39,10 @@ jobs:
           EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TRACK: ${{ inputs.track }}
+          START_INDEX: ${{ inputs.start_index }}
+          COUNT: ${{ inputs.count }}
           PYTHONWARNINGS: ignore::ResourceWarning
-        run: python -m visibility_observatory.v2_private_pilot --track "$TRACK" --output build/private-pilot/capture.p7m
+        run: python -m visibility_observatory.v2_private_pilot --track "$TRACK" --start-index "$START_INDEX" --count "$COUNT" --output build/private-pilot/capture.p7m
       - name: Upload encrypted capture only
         if: success()
         uses: actions/upload-artifact@v4

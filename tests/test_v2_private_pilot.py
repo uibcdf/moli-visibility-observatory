@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from visibility_observatory.v2_private_pilot import run_one
+from visibility_observatory.v2_private_pilot import run_segment
 
 
 class PrivatePilotTests(unittest.TestCase):
@@ -17,7 +17,7 @@ class PrivatePilotTests(unittest.TestCase):
                 "visibility_observatory.v2_private_pilot.collect",
                 return_value={"answer": marker},
             ) as mocked:
-                run_one("tavily", output)
+                run_segment("tavily", 1, 1, output)
             self.assertEqual(mocked.call_args.kwargs["start_index"], 1)
             self.assertEqual(mocked.call_args.kwargs["max_queries"], 1)
             self.assertTrue(output.is_file())
@@ -25,6 +25,14 @@ class PrivatePilotTests(unittest.TestCase):
             subprocess.run(["openssl", "cms", "-cmsout", "-inform", "DER",
                             "-in", str(output), "-noout"], check=True,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    def test_invalid_range_makes_no_request(self):
+        with tempfile.TemporaryDirectory() as directory, patch(
+            "visibility_observatory.v2_private_pilot.collect"
+        ) as mocked:
+            with self.assertRaises(ValueError):
+                run_segment("exa", 47, 2, Path(directory) / "capture.p7m")
+            mocked.assert_not_called()
 
 
 if __name__ == "__main__":
