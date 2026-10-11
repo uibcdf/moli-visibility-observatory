@@ -28,6 +28,8 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 
 ## P3 — Exa-assisted and scientific evaluation
 
+- [x] Freeze the offline V2 question protocol: 15 paired primary intents plus separate six-question control, named-alternative and Spanish strata. Structural validator and byte hash guard the corpus; no V2 provider measurements exist.
+- [ ] Before V2 activation, review scientific wording with domain maintainers, applicable account terms, quota and retention rights; add segment-capable collectors, verify exact benchmark-byte provenance, and run a bounded authorized pilot.
 - [ ] Review relevance of the Exa top-five source set; assess whether titles/URLs suffice versus licensed snippets/content.
 - [ ] Complete controlled same-model `closed_book` vs `exa_assisted` under matched concise-v2 settings.
 - [ ] Adjudicate mention versus recommendation, ranking and technical correctness; track older MolSysMT versions.

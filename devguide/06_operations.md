@@ -12,6 +12,14 @@ python -m http.server 8000 --directory build/public-site
 
 Python standard library is sufficient for current commands. Check packaging and Python compatibility before changing dependencies. Do **not** use actual API credentials in unit tests.
 
+The V2 question corpus is frozen but has **no live results**. Validate its schema, strata, pairs and exact SHA-256 offline with:
+
+```bash
+python -m visibility_observatory.benchmark_v2
+```
+
+The output should report 30 primary, 6 control, 6 named-alternative and 6 Spanish prompts with SHA-256 `fab3c490c1ff158f0ae4528bf147c8aea216da527c2d65e5e4f4330315ee6335`. V1 remains the default of all manual collection workflows. Do not pass V2 to a live client until the activation gates in [methodology](03_methodology.md) are met and segment collection is implemented.
+
 An offline manifest can be generated and checked with the synthetic fixture; this does not query a provider or retain original answers:
 
 ```bash

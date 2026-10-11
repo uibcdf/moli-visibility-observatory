@@ -1,0 +1,508 @@
+{
+  "schema_version": "benchmark-v2",
+  "version": "2.0",
+  "status": "frozen",
+  "design": {
+    "primary_intents": 15,
+    "primary_prompts_per_intent": 2,
+    "negative_controls": 6,
+    "named_alternative_pairs": 6,
+    "spanish_pairs": 6,
+    "order": "fixed shuffle, seed 20261010; array order is the collection order",
+    "analysis": "Report primary, negative controls, named alternatives and Spanish variants separately; never pool with V1 or across provider tracks."
+  },
+  "queries": [
+    {
+      "id": "H04",
+      "family": "simulation_interop",
+      "stratum": "named_alternative",
+      "intent_id": "I01",
+      "variant": "named_alternative",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "paired_with": "I01A",
+      "query": "I'm considering OpenMM for dynamics. How can I prepare a molecular structure in Python and pass it to a simulation engine while checking the handoff?"
+    },
+    {
+      "id": "S02A",
+      "family": "storage_reproducibility",
+      "stratum": "primary_unbranded",
+      "intent_id": "S02",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "How can I save and later reload a multi-frame molecular system without losing the relationship between atoms and coordinates?"
+    },
+    {
+      "id": "S01A",
+      "family": "storage_reproducibility",
+      "stratum": "primary_unbranded",
+      "intent_id": "S01",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "What Python tools can store molecular topology, trajectory frames and unit metadata together for reproducible analysis?"
+    },
+    {
+      "id": "A03B",
+      "family": "selection_analysis",
+      "stratum": "primary_unbranded",
+      "intent_id": "A03",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "I have a multi-frame protein trajectory and need per-atom RMSF and radius of gyration over time. Which Python tools are relevant?"
+    },
+    {
+      "id": "S03A",
+      "family": "storage_reproducibility",
+      "stratum": "primary_unbranded",
+      "intent_id": "S03",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Which Python toolkit can inspect the contents and data forms of a molecular system before I convert or archive it?"
+    },
+    {
+      "id": "E04",
+      "family": "simulation_interop",
+      "stratum": "spanish_unbranded",
+      "intent_id": "I01",
+      "variant": "spanish_translation",
+      "language": "es",
+      "expected_scope": "in_scope",
+      "paired_with": "I01A",
+      "query": "¿Cómo puedo preparar una estructura molecular en Python y pasarla a un motor de simulación mientras compruebo la transferencia?"
+    },
+    {
+      "id": "N05",
+      "family": "negative_control",
+      "stratum": "negative_control",
+      "intent_id": "N05",
+      "variant": "control",
+      "language": "en",
+      "expected_scope": "out_of_scope",
+      "query": "Which program should I use for density functional theory calculations of a molecule's electronic band structure?"
+    },
+    {
+      "id": "A02B",
+      "family": "selection_analysis",
+      "stratum": "primary_unbranded",
+      "intent_id": "A02",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Given a protein topology and trajectory, I want frame-by-frame RMSD to a reference and contacts between two residue sets. Which Python toolkit should I examine?"
+    },
+    {
+      "id": "A01B",
+      "family": "selection_analysis",
+      "stratum": "primary_unbranded",
+      "intent_id": "A01",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "I need to select backbone atoms from a structure file and apply the same selection to trajectory frames. What Python tools can help?"
+    },
+    {
+      "id": "N02",
+      "family": "negative_control",
+      "stratum": "negative_control",
+      "intent_id": "N02",
+      "variant": "control",
+      "language": "en",
+      "expected_scope": "out_of_scope",
+      "query": "What Python workflow can find differentially expressed genes from single-cell RNA sequencing counts?"
+    },
+    {
+      "id": "S02B",
+      "family": "storage_reproducibility",
+      "stratum": "primary_unbranded",
+      "intent_id": "S02",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "After analysis I need to archive a selected set of trajectory frames with their topology, then reopen the archive for another Python session. Which toolkit is suitable?"
+    },
+    {
+      "id": "C01B",
+      "family": "conversion",
+      "stratum": "primary_unbranded",
+      "intent_id": "C01",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "I have a structure in mmCIF and need a Python molecular object for another library while keeping track of its topology and coordinates. What should I use?"
+    },
+    {
+      "id": "N04",
+      "family": "negative_control",
+      "stratum": "negative_control",
+      "intent_id": "N04",
+      "variant": "control",
+      "language": "en",
+      "expected_scope": "out_of_scope",
+      "query": "What software reconstructs a cryo-electron microscopy density map from raw detector movies?"
+    },
+    {
+      "id": "H03",
+      "family": "selection_analysis",
+      "stratum": "named_alternative",
+      "intent_id": "A01",
+      "variant": "named_alternative",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "paired_with": "A01A",
+      "query": "I'm considering MDAnalysis or MDTraj. Which Python toolkit supports atom and residue selections that I can reuse across different molecular data forms?"
+    },
+    {
+      "id": "P03A",
+      "family": "preparation",
+      "stratum": "primary_unbranded",
+      "intent_id": "P03",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "How can I inspect a protein structure for missing atoms and topology problems before attempting repair in Python?"
+    },
+    {
+      "id": "A01A",
+      "family": "selection_analysis",
+      "stratum": "primary_unbranded",
+      "intent_id": "A01",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Which Python toolkit supports atom and residue selections that I can reuse across different molecular data forms?"
+    },
+    {
+      "id": "N01",
+      "family": "negative_control",
+      "stratum": "negative_control",
+      "intent_id": "N01",
+      "variant": "control",
+      "language": "en",
+      "expected_scope": "out_of_scope",
+      "query": "Which software should I use to assemble a bacterial genome from raw sequencing reads and assess assembly quality?"
+    },
+    {
+      "id": "C02A",
+      "family": "conversion",
+      "stratum": "primary_unbranded",
+      "intent_id": "C02",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Which Python tools can combine a separate molecular topology and trajectory for inspection and analysis?"
+    },
+    {
+      "id": "H05",
+      "family": "storage_reproducibility",
+      "stratum": "named_alternative",
+      "intent_id": "S01",
+      "variant": "named_alternative",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "paired_with": "S01A",
+      "query": "I'm considering MDTraj or MDAnalysis. What Python tools can store molecular topology, trajectory frames and unit metadata together for reproducible analysis?"
+    },
+    {
+      "id": "P01B",
+      "family": "preparation",
+      "stratum": "primary_unbranded",
+      "intent_id": "P01",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "I have a PDB file with incomplete side chains. What Python toolkit can build the missing heavy atoms, add hydrogens, and return a prepared molecular structure?"
+    },
+    {
+      "id": "E03",
+      "family": "selection_analysis",
+      "stratum": "spanish_unbranded",
+      "intent_id": "A01",
+      "variant": "spanish_translation",
+      "language": "es",
+      "expected_scope": "in_scope",
+      "paired_with": "A01A",
+      "query": "¿Qué herramienta de Python permite seleccionar átomos y residuos y reutilizar esas selecciones con distintas representaciones de datos moleculares?"
+    },
+    {
+      "id": "P02B",
+      "family": "preparation",
+      "stratum": "primary_unbranded",
+      "intent_id": "P02",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Starting from a PDB protein, I need to handle terminal chemistry, add a water box and ions, then inspect the resulting system. Which Python tools should I consider?"
+    },
+    {
+      "id": "I03B",
+      "family": "simulation_interop",
+      "stratum": "primary_unbranded",
+      "intent_id": "I03",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "After selecting one frame from a trajectory, I need to send that structure to a simulation workflow and verify its topology and coordinates. Which Python toolkit can help?"
+    },
+    {
+      "id": "C02B",
+      "family": "conversion",
+      "stratum": "primary_unbranded",
+      "intent_id": "C02",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "My protein topology is in a PDB file and its frames are in an XTC file. What Python toolkit can load them together and expose atom identities and coordinates?"
+    },
+    {
+      "id": "H02",
+      "family": "conversion",
+      "stratum": "named_alternative",
+      "intent_id": "C01",
+      "variant": "named_alternative",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "paired_with": "C01A",
+      "query": "I'm considering MDAnalysis or MDTraj. What Python toolkit can read PDB or mmCIF structures and move them into molecular objects used by other analysis libraries?"
+    },
+    {
+      "id": "C01A",
+      "family": "conversion",
+      "stratum": "primary_unbranded",
+      "intent_id": "C01",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "What Python toolkit can read PDB or mmCIF structures and move them into molecular objects used by other analysis libraries?"
+    },
+    {
+      "id": "P03B",
+      "family": "preparation",
+      "stratum": "primary_unbranded",
+      "intent_id": "P03",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Given an incomplete coordinate file, which Python toolkit lets me inspect residues, atoms and bonds, then prepare the structure for downstream work?"
+    },
+    {
+      "id": "N06",
+      "family": "negative_control",
+      "stratum": "negative_control",
+      "intent_id": "N06",
+      "variant": "control",
+      "language": "en",
+      "expected_scope": "out_of_scope",
+      "query": "What software can screen a million candidate ligands by docking them into a receptor binding site?"
+    },
+    {
+      "id": "I01B",
+      "family": "simulation_interop",
+      "stratum": "primary_unbranded",
+      "intent_id": "I01",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Starting from a PDB protein, I need a prepared system whose topology and coordinates can be handed to a Python molecular dynamics engine. Which toolkit can support that workflow?"
+    },
+    {
+      "id": "E05",
+      "family": "storage_reproducibility",
+      "stratum": "spanish_unbranded",
+      "intent_id": "S01",
+      "variant": "spanish_translation",
+      "language": "es",
+      "expected_scope": "in_scope",
+      "paired_with": "S01A",
+      "query": "¿Qué herramientas de Python pueden guardar juntas la topología molecular, los fotogramas de una trayectoria y los metadatos de unidades para un análisis reproducible?"
+    },
+    {
+      "id": "H01",
+      "family": "preparation",
+      "stratum": "named_alternative",
+      "intent_id": "P01",
+      "variant": "named_alternative",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "paired_with": "P01A",
+      "query": "I'm considering PDBFixer or Biotite. Which Python tools can repair missing heavy atoms in a protein structure and add hydrogens before molecular dynamics?"
+    },
+    {
+      "id": "I01A",
+      "family": "simulation_interop",
+      "stratum": "primary_unbranded",
+      "intent_id": "I01",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "How can I prepare a molecular structure in Python and pass it to a simulation engine while checking the handoff?"
+    },
+    {
+      "id": "N03",
+      "family": "negative_control",
+      "stratum": "negative_control",
+      "intent_id": "N03",
+      "variant": "control",
+      "language": "en",
+      "expected_scope": "out_of_scope",
+      "query": "Which tool predicts a protein's three-dimensional fold directly from its amino acid sequence?"
+    },
+    {
+      "id": "P01A",
+      "family": "preparation",
+      "stratum": "primary_unbranded",
+      "intent_id": "P01",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Which Python tools can repair missing heavy atoms in a protein structure and add hydrogens before molecular dynamics?"
+    },
+    {
+      "id": "S03B",
+      "family": "storage_reproducibility",
+      "stratum": "primary_unbranded",
+      "intent_id": "S03",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Before exporting a simulation result, I want to inspect its atoms, structures, topology and available data forms to choose a storage format. What Python toolkit can help?"
+    },
+    {
+      "id": "H06",
+      "family": "conversion",
+      "stratum": "named_alternative",
+      "intent_id": "C02",
+      "variant": "named_alternative",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "paired_with": "C02A",
+      "query": "I'm considering MDAnalysis or MDTraj. Which Python tools can combine a separate molecular topology and trajectory for inspection and analysis?"
+    },
+    {
+      "id": "C03A",
+      "family": "conversion",
+      "stratum": "primary_unbranded",
+      "intent_id": "C03",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "How can I convert a molecular system between Python data forms and inspect what happens to topology and coordinates?"
+    },
+    {
+      "id": "C03B",
+      "family": "conversion",
+      "stratum": "primary_unbranded",
+      "intent_id": "C03",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "I need to transfer a structure from a file into an analysis-library object and back. Which Python toolkit can help me check atom order, bonds, coordinates and possible information loss?"
+    },
+    {
+      "id": "E02",
+      "family": "conversion",
+      "stratum": "spanish_unbranded",
+      "intent_id": "C01",
+      "variant": "spanish_translation",
+      "language": "es",
+      "expected_scope": "in_scope",
+      "paired_with": "C01A",
+      "query": "¿Qué herramienta de Python puede leer estructuras PDB o mmCIF y transformarlas en objetos moleculares utilizados por otras bibliotecas de análisis?"
+    },
+    {
+      "id": "E06",
+      "family": "conversion",
+      "stratum": "spanish_unbranded",
+      "intent_id": "C02",
+      "variant": "spanish_translation",
+      "language": "es",
+      "expected_scope": "in_scope",
+      "paired_with": "C02A",
+      "query": "¿Qué herramientas de Python pueden combinar una topología molecular y una trayectoria guardadas por separado para inspeccionarlas y analizarlas?"
+    },
+    {
+      "id": "I02A",
+      "family": "simulation_interop",
+      "stratum": "primary_unbranded",
+      "intent_id": "I02",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Which Python toolkit helps inspect molecular topology, coordinates and units before launching a simulation?"
+    },
+    {
+      "id": "S01B",
+      "family": "storage_reproducibility",
+      "stratum": "primary_unbranded",
+      "intent_id": "S01",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "I have protein topology and hundreds of coordinate frames. Which Python toolkit can save them with units in one portable molecular data file?"
+    },
+    {
+      "id": "I02B",
+      "family": "simulation_interop",
+      "stratum": "primary_unbranded",
+      "intent_id": "I02",
+      "variant": "concrete_io",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Before starting dynamics, I want to check atom order, bond connectivity, coordinate units and box information in a prepared system. What Python tools should I evaluate?"
+    },
+    {
+      "id": "A03A",
+      "family": "selection_analysis",
+      "stratum": "primary_unbranded",
+      "intent_id": "A03",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "Which Python packages help analyze protein flexibility and compactness across trajectory frames?"
+    },
+    {
+      "id": "P02A",
+      "family": "preparation",
+      "stratum": "primary_unbranded",
+      "intent_id": "P02",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "What Python toolkit helps prepare a protein with terminal groups, solvent, and ions for a molecular dynamics workflow?"
+    },
+    {
+      "id": "E01",
+      "family": "preparation",
+      "stratum": "spanish_unbranded",
+      "intent_id": "P01",
+      "variant": "spanish_translation",
+      "language": "es",
+      "expected_scope": "in_scope",
+      "paired_with": "P01A",
+      "query": "¿Qué herramientas de Python pueden reparar átomos pesados ausentes en una estructura proteica y añadir hidrógenos antes de una simulación de dinámica molecular?"
+    },
+    {
+      "id": "A02A",
+      "family": "selection_analysis",
+      "stratum": "primary_unbranded",
+      "intent_id": "A02",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "What Python tools can calculate structural RMSD and residue contacts over a molecular dynamics trajectory?"
+    },
+    {
+      "id": "I03A",
+      "family": "simulation_interop",
+      "stratum": "primary_unbranded",
+      "intent_id": "I03",
+      "variant": "researcher_request",
+      "language": "en",
+      "expected_scope": "in_scope",
+      "query": "How can I move a molecular structure between analysis and simulation workflows while preserving atom identity?"
+    }
+  ]
+}

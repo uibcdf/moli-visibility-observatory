@@ -46,7 +46,7 @@ It is labeled synthetic and must not be presented as a measured baseline.
 
 ## Collection and safety
 
-The benchmark is frozen in [queries/v1.json](queries/v1.json): 20 unbranded English queries in four families. Web captures store ordered URLs and status per query. New Gemini batch checkpoints record the model, prompt protocol and output token limit; individual samples record response status, plus finish reason and usage when available. Historical batch artifacts are unchanged. The [methodology](docs/methodology.md) explains denominators and evidence limits.
+The measured V1 benchmark is frozen in [queries/v1.json](queries/v1.json): 20 unbranded English queries in four families. A separate [V2 question corpus](queries/v2.json) is now frozen with 48 prompts across primary tasks, controls, named-alternative and Spanish variants; it has **not been run**. Validate it offline with `python -m visibility_observatory.benchmark_v2`. Web captures store ordered URLs and status per query. New Gemini batch checkpoints record the model, prompt protocol and output token limit; individual samples record response status, plus finish reason and usage when available. Historical batch artifacts are unchanged. The [methodology](docs/methodology.md) explains denominators and evidence limits.
 
 Collection workflows are **manual only**: Tavily/Exa, optional Brave, Gemini closed-book and Gemini with Exa context. They require the relevant Actions secrets (`TAVILY_API_KEY`, `EXA_API_KEY`, `BRAVE_SEARCH_API_KEY`, `GEMINI_API_KEY`). No monthly collection is scheduled. Gemini native Google Search grounding is disabled pending separate terms, quota, price and explicit spending approval. A consumer subscription does not authorize API billing.
 
