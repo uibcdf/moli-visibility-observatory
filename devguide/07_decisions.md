@@ -23,6 +23,7 @@ This file preserves why the Observatory works as it does. Add dated decisions ra
 | 2026-10-10 | Freeze V2 as a separate 48-prompt, four-stratum corpus | Broaden five documented use-case families with paired formulations, six unrelated controls and six each named-alternative and Spanish variants. Fixed order and exact bytes preserve repeatability; report each stratum and provider track separately. This is a protocol artifact, not a live result or authorization to spend quota. |
 | 2026-10-11 | Prepare V2 segments without activating live workflows | Use a fixed 20/20/8 plan, exact corpus SHA-256 in new captures, an explicit V2 CLI switch and manifest checks for contiguous IDs. Keep Actions on V1 and reject V2 in the old pooled web renderer until stratum-aware analysis and rights review are complete. |
 | 2026-10-11 | Analyze V2 strata only from compatible, local captures | Reuse exact-byte manifests and conflict checks, report web URL presence or model name occurrence by stratum and paired intent, and retain missingness. Keep the derivative internal; no automatic recommendation or publication claim. |
+| 2026-10-11 | Propose an S02A one-query V2 pilot, pending owner/account review | Test the same unbranded primary intent across four separately recorded experiments with bounded request ceilings. Public provider terms and generic rate limits do not establish this project's remaining quota or permission to retain/publish output. |
 
 ## Future decision candidates
 

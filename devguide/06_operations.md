@@ -36,6 +36,12 @@ python -m visibility_observatory.v2_analysis --run /path/to/segment-1.json --run
 
 The command makes no provider requests. It rejects conflicting complete attempts or mixed tracks/settings, leaves missing observations unevaluable, and reports each stratum and paired comparison separately. For model output it counts only explicit name occurrences; recommendation quality and technical correctness need human review. The report is marked `internal_unreviewed`, omits source URLs and answers, and must not be fed to Pages or published before rights and scientific review.
 
+### Proposed first V2 pilot; not authorized
+
+Use the frozen **primary, unbranded** query `S02A` at zero-based index `1`, one question per experiment: Tavily ranked search, Exa ranked search, Gemini 3.8 Flash closed-book, and Gemini 3.8 Flash with Exa titles/URLs. Run one experiment at a time, inspect its checkpoint/status and provider usage, and stop at a 429 or other nonretryable error. If all four are explicitly approved and attempted, the ceiling is one Tavily request, two Exa requests (one direct plus one assisted), and up to four Gemini requests (one closed-book and one assisted call, each with at most one existing 5xx retry). No second V2 question or larger segment is part of this pilot. Do not publish pilot output automatically.
+
+Before invoking any `--execute-v2` command, the project owner must verify the actual Tavily/Exa account or order terms for capture/retention and public metrics, inspect remaining credits and rate limits in those accounts, and inspect the Gemini project's tier, model availability and RPM/TPM/RPD in AI Studio. Obtain explicit authorization for the selected experiment and its request ceiling. [Tavily terms](https://www.tavily.com/terms), [Exa terms](https://exa.ai/assets/Exa_Labs_Terms_of_Service.pdf), [Gemini rate limits](https://ai.google.dev/gemini-api/docs/rate-limits) and [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing) are public references; they do not establish account-specific permission or free capacity. Never send secrets to chat or commit them.
+
 An offline manifest can be generated and checked with the synthetic fixture; this does not query a provider or retain original answers:
 
 ```bash
