@@ -7,7 +7,7 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 ## P0 — documentation and audit (immediate)
 
 - [x] Establish developer guide as source of durable intent and checkpoint.
-- [x] Audit current code, CI, Pages and test coverage from a clean local clone; reconcile stale top-level docs. The 2026-10-10 audit and hosted verification are in the checkpoint; no new hosted run was triggered for this documentation change.
+- [x] Audit code, CI, Pages and test coverage; reconcile stale top-level docs. The dated audits and hosted verification links are in the checkpoint.
 - [x] Record protocol/data-schema and workflow cost-risk inventory in the architecture guide.
 - [ ] Resolve provider storage, metric-publication and redistribution rights against the actual account agreements. A preliminary 2026-10-10 reading flagged Tavily and Exa restrictions; see architecture and checkpoint before adding public metrics or raw archives.
 - **Gate:** a new developer can reproduce local tests and explain each metric without conversation context.
