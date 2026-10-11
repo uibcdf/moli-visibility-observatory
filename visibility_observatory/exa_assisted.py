@@ -8,27 +8,35 @@ import time
 import urllib.error
 import urllib.request
 
-from visibility_observatory.__main__ import ROOT, load
 from visibility_observatory.agent_batch import write_atomic
+from visibility_observatory.benchmark_run import load_frozen, require_v2_activation, segment
 from visibility_observatory.gemini import collect, OUTPUT_TOKENS, PROTOCOL_VERSION
 from visibility_observatory.providers import _fetch
 
 def capture(gemini_key, exa_key, benchmark, *, output, model="gemini-3.8-flash",
-            start_index=0, count=1, top_k=5, delay=8,
+            start_index=0, count=1, top_k=5, delay=8, benchmark_sha256=None,
             search=_fetch, model_call=collect, pause=time.sleep):
     if not gemini_key or not exa_key:
         raise ValueError("Gemini and Exa keys are required")
     if not 0 <= start_index < len(benchmark["queries"]) or not 1 <= count <= 20 or not 1 <= top_k <= 10:
         raise ValueError("Invalid bounded evaluation parameters")
-    selected=benchmark["queries"][start_index:start_index+count]
+    if benchmark["version"] == "2.0":
+        if not benchmark_sha256:
+            raise ValueError("V2 capture requires exact benchmark SHA-256")
+        selected=segment(benchmark,start_index,count)
+    else:
+        selected=benchmark["queries"][start_index:start_index+count]
     data={"schema_version":"agent-assisted-observation-v1",
           "benchmark_version":benchmark["version"],"track":"agent_recommendation",
           "mode":"exa_assisted","model":model,"retrieval_provider":"exa-search-api",
           "top_k":top_k,"protocol_version":PROTOCOL_VERSION,
           "output_token_limit":OUTPUT_TOKENS,
           "collected_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
+          "start_index":start_index,
           "requested_query_ids":[q["id"] for q in selected],
           "evaluation_status":"unadjudicated","samples":[]}
+    if benchmark_sha256 is not None:
+        data["benchmark_sha256"]=benchmark_sha256
     write_atomic(output,data)
     for offset,q in enumerate(selected):
         if offset: pause(delay)
@@ -74,13 +82,26 @@ def main():
     p.add_argument("--count",type=int,default=1)
     p.add_argument("--start-index",type=int,default=0)
     p.add_argument("--output",default="build/observations/exa-assisted.json")
+    p.add_argument("--benchmark-version",choices=("v1","v2"),default="v1")
+    p.add_argument("--execute-v2",action="store_true")
     args=p.parse_args()
+    try:
+        require_v2_activation(args.benchmark_version,args.execute_v2)
+        benchmark,digest=load_frozen(args.benchmark_version)
+    except ValueError as error:
+        p.error(str(error))
     if args.category=="interoperability":
+        if args.benchmark_version!="v1":
+            p.error("The interoperability shortcut belongs to V1 only")
         args.start_index=5
         args.count=5
+    try:
+        segment(benchmark,args.start_index,args.count)
+    except ValueError as error:
+        p.error(str(error))
     data=capture(os.environ.get("GEMINI_API_KEY"),os.environ.get("EXA_API_KEY"),
-        load(ROOT/"queries/v1.json"),model=args.model,count=args.count,
-        start_index=args.start_index,output=args.output)
+        benchmark,model=args.model,count=args.count,start_index=args.start_index,
+        output=args.output,benchmark_sha256=digest)
     print(json.dumps({k:data[k] for k in ("complete_count","incomplete_count","unattempted_count","all_complete")}))
     if not data["all_complete"]:raise SystemExit(2)
 if __name__=="__main__":main()

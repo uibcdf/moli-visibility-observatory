@@ -60,6 +60,11 @@ def _requested_ids(capture, benchmark_ids, samples):
             any(not isinstance(x, str) or x not in benchmark_ids for x in requested) or
             len(requested) != len(set(requested))):
         raise ValueError("Invalid requested query IDs")
+    if "start_index" in capture:
+        start = capture["start_index"]
+        if (type(start) is not int or start < 0 or
+                requested != benchmark_ids[start:start + len(requested)]):
+            raise ValueError("Requested IDs do not match the benchmark segment")
     return requested
 
 
@@ -74,6 +79,11 @@ def build_manifest(capture_bytes, benchmark_bytes):
         raise ValueError("Unsupported capture schema or track")
     if capture.get("benchmark_version") != benchmark.get("version"):
         raise ValueError("Benchmark version mismatch")
+    benchmark_digest = _sha256(benchmark_bytes)
+    capture_digest = capture.get("benchmark_sha256")
+    if (capture_digest is not None and capture_digest != benchmark_digest) or (
+            benchmark.get("version") == "2.0" and capture_digest is None):
+        raise ValueError("Capture does not identify the exact benchmark bytes")
     benchmark_ids = _query_ids(benchmark)
     samples = capture.get("samples")
     if not isinstance(samples, list) or any(not isinstance(x, dict) for x in samples):
@@ -144,7 +154,6 @@ def build_manifest(capture_bytes, benchmark_bytes):
     counts = {status: sum(item["status"] == status for item in states)
               for status in (*STATUSES, "unattempted")}
     source_digest = _sha256(capture_bytes)
-    benchmark_digest = _sha256(benchmark_bytes)
     identity = _sha256(("moli-evidence-manifest-v1:" + source_digest + ":" + benchmark_digest).encode())
     provenance = {
         "capture_schema_version": schema,

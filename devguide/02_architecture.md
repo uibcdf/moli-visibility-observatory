@@ -6,6 +6,7 @@
 queries/v1.json                       frozen 20 unbranded queries (G/I/S/D)
 queries/v2.json                       frozen 48-prompt, four-stratum question protocol; no captures
 visibility_observatory/benchmark_v2.py offline V2 design validator
+visibility_observatory/benchmark_run.py offline frozen-byte loader and three-segment V2 plan
 visibility_observatory/__main__.py    web-ranked result validation, Presence@k/MRR@k, local HTML
 visibility_observatory/providers.py   manual Tavily and Exa searches
 visibility_observatory/brave.py       optional Brave collection
@@ -58,7 +59,7 @@ The `validate.yml` workflow runs tests and builds a clearly synthetic preview on
 
 The provider configuration, prompt profile and benchmark **all affect comparability**. Current Gemini `concise-v2` changes instruction length and output budget; it is not identical to earlier runs. `gemini.py` includes `protocol_version` and `output_token_limit` in direct captures; new `agent_batch.py` checkpoints copy those constants into the outer record before the first request. New `exa_assisted.py` captures now also include both fields. Earlier artifacts, including [the Gemini 3.1 baseline](https://github.com/uibcdf/moli-visibility-observatory/actions/runs/38052178041), were not rewritten; their protocol identity still depends on code/run provenance and missing fields cause the offline merge to reject them. Source URLs are not source page bodies: the current Exa-assisted implementation only supplies titles and URLs. A source may be stale or misleading.
 
-The V2 file adds `stratum`, `intent_id`, `variant`, `language`, `expected_scope` and optional `paired_with` to each `id`/`query`. Existing capture functions can read the common fields when passed a benchmark object, but their CLIs and manual workflows currently load V1; ranked Tavily/Exa collection also selects only the leading segment. V2 is an offline frozen input, not a live-workflow switch. A future V2 capture must record the exact V2 bytes/hash and query segment, and preserve track separation.
+The V2 file adds `stratum`, `intent_id`, `variant`, `language`, `expected_scope` and optional `paired_with` to each `id`/`query`. `benchmark_run.py` checks exact frozen V1/V2 bytes and prints V2's three contiguous segments (20/20/8) without network access. Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs now accept an explicit benchmark version and segment; V2 requires `--execute-v2`, while the default and every manual Actions workflow remain V1. New captures include a source-file SHA-256; web and assisted captures also state the start index and requested query IDs. The manifest rejects a V2 capture without a matching hash or with IDs inconsistent with the declared segment. Existing historical artifacts are not rewritten. The old web metric renderer deliberately rejects V2 to prevent a pooled 48-prompt score. Stratum-aware V2 analysis and reviewed publication are separate remaining work, subject to rights and scientific review.
 
 ## Known architectural debt
 

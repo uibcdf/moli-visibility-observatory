@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import time
 
-from visibility_observatory.__main__ import ROOT, load
+from visibility_observatory.benchmark_run import load_frozen, require_v2_activation, segment
 from visibility_observatory.gemini import DEFAULT_MODEL, OUTPUT_TOKENS, PROTOCOL_VERSION, collect
 
 def write_atomic(path, value):
@@ -20,12 +20,18 @@ def write_atomic(path, value):
     temporary.replace(path)
 
 def run_batch(key, benchmark, *, output, model=DEFAULT_MODEL, start_index=0,
-              count=20, delay=8, collect_one=collect, pause=time.sleep):
+              count=20, delay=8, benchmark_sha256=None,
+              collect_one=collect, pause=time.sleep):
     if not key: raise ValueError("GEMINI_API_KEY is required")
     queries=benchmark["queries"]
     if not 0 <= start_index < len(queries) or not 1 <= count <= 20:
         raise ValueError("Invalid query range")
-    chosen=queries[start_index:start_index+count]
+    if benchmark["version"] == "2.0":
+        if not benchmark_sha256:
+            raise ValueError("V2 capture requires exact benchmark SHA-256")
+        chosen=segment(benchmark,start_index,count)
+    else:
+        chosen=queries[start_index:start_index+count]
     data={"schema_version":"agent-observation-v1","track":"agent_recommendation",
           "benchmark_version":benchmark["version"],"provider":"google-gemini-api",
           "model":model,"mode":"closed_book","protocol_version":PROTOCOL_VERSION,
@@ -33,6 +39,8 @@ def run_batch(key, benchmark, *, output, model=DEFAULT_MODEL, start_index=0,
           "collected_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),
           "start_index":start_index,"requested_query_ids":[q["id"] for q in chosen],
           "evaluation_status":"unadjudicated","synthetic":False,"samples":[]}
+    if benchmark_sha256 is not None:
+        data["benchmark_sha256"]=benchmark_sha256
     write_atomic(output,data)
     for ix,q in enumerate(chosen):
         if ix: pause(delay)
@@ -64,11 +72,19 @@ def main():
     p.add_argument("--count",type=int,default=20)
     p.add_argument("--delay-seconds",type=int,default=8)
     p.add_argument("--output",default="build/observations/gemini-batch.json")
+    p.add_argument("--benchmark-version",choices=("v1","v2"),default="v1")
+    p.add_argument("--execute-v2",action="store_true")
     args=p.parse_args()
     if not 0 <= args.delay_seconds <= 120: p.error("Invalid delay")
-    result=run_batch(os.environ.get("GEMINI_API_KEY"),load(ROOT/"queries/v1.json"),
+    try:
+        require_v2_activation(args.benchmark_version,args.execute_v2)
+        benchmark,digest=load_frozen(args.benchmark_version)
+        segment(benchmark,args.start_index,args.count)
+    except ValueError as error:
+        p.error(str(error))
+    result=run_batch(os.environ.get("GEMINI_API_KEY"),benchmark,
                      output=args.output,model=args.model,start_index=args.start_index,
-                     count=args.count,delay=args.delay_seconds)
+                     count=args.count,delay=args.delay_seconds,benchmark_sha256=digest)
     print(json.dumps({k:result[k] for k in ("complete_count","failed_count","unattempted_count","all_complete")}))
     # Nonzero exit for incomplete benchmark, but artifacts remain available.
     if not result["all_complete"]: raise SystemExit(2)

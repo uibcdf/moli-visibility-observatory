@@ -18,7 +18,15 @@ The V2 question corpus is frozen but has **no live results**. Validate its schem
 python -m visibility_observatory.benchmark_v2
 ```
 
-The output should report 30 primary, 6 control, 6 named-alternative and 6 Spanish prompts with SHA-256 `fab3c490c1ff158f0ae4528bf147c8aea216da527c2d65e5e4f4330315ee6335`. V1 remains the default of all manual collection workflows. Do not pass V2 to a live client until the activation gates in [methodology](03_methodology.md) are met and segment collection is implemented.
+The output should report 30 primary, 6 control, 6 named-alternative and 6 Spanish prompts with SHA-256 `fab3c490c1ff158f0ae4528bf147c8aea216da527c2d65e5e4f4330315ee6335`. V1 remains the default of all manual collection workflows. Do not pass V2 to a live client until the activation gates in [methodology](03_methodology.md) are met.
+
+Preview the exact V2 collection order and three bounded segments without credentials or network calls:
+
+```bash
+python -m visibility_observatory.benchmark_run
+```
+
+The plan lists `(start_index, count)` as `(0, 20)`, `(20, 20)` and `(40, 8)`, each with original query IDs and the frozen file hash. The Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs accept `--benchmark-version v2` and the relevant start/count arguments, but refuse V2 without `--execute-v2`. This switch only prevents accidental local invocation; the owner must still approve a bounded live plan after checking the applicable account terms, quotas and retention rights. Existing manual Actions workflows remain V1 and have no V2 option. Do not feed V2 captures into the existing web metric renderer: it rejects them until separate-stratum analysis exists.
 
 An offline manifest can be generated and checked with the synthetic fixture; this does not query a provider or retain original answers:
 

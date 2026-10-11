@@ -6,6 +6,7 @@ def target(url):
     u=urlparse(url);host=(u.hostname or '').lower();path=u.path.lower()
     return (host=='github.com' and (path.rstrip('/')=='/uibcdf/molsysmt' or path.startswith('/uibcdf/molsysmt/'))) or ((host=='uibcdf.org' or host.endswith('.uibcdf.org')) and 'molsysmt' in path)
 def compute(run,bench,k):
+    if bench.get('version')=='2.0': raise ValueError('V2 requires separate stratum-aware analysis; pooled web metrics are invalid')
     if run.get('track')!='web_search': raise ValueError('Only web_search is supported; agent scoring is not implemented')
     if run.get('schema_version')!='1' or run.get('benchmark_version')!=bench['version']: raise ValueError('Version mismatch')
     if not run.get('provider') or not run.get('collected_at_utc'): raise ValueError('Missing provenance')
