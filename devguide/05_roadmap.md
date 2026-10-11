@@ -30,7 +30,8 @@ This roadmap guides priorities; current blockers and validated run evidence are 
 
 - [x] Freeze the offline V2 question protocol: 15 paired primary intents plus separate six-question control, named-alternative and Spanish strata. Structural validator and byte hash guard the corpus; no V2 provider measurements exist.
 - [x] Prepare offline 20/20/8 V2 segment plan; add bounded segment selection and exact benchmark-byte provenance to Tavily/Exa, checkpointed Gemini and Exa-assisted capture paths. Their manual Actions workflows still use V1; no V2 API call has occurred.
-- [ ] Before V2 activation, review scientific wording with domain maintainers, applicable account terms, quota and retention rights; run a bounded authorized pilot. Implement stratum-aware V2 analysis and human adjudication before any public V2 metric.
+- [x] Add local, unreviewed V2 analysis by stratum and compatible track, with paired A/B and named-alternative/Spanish descriptions, retaining missingness. Synthetic tests only; no public V2 metric.
+- [ ] Before V2 activation, review scientific wording with domain maintainers, applicable account terms, quota and retention rights; run a bounded authorized pilot. Human adjudication and permitted source provenance remain necessary before any public V2 metric.
 - [ ] Review relevance of the Exa top-five source set; assess whether titles/URLs suffice versus licensed snippets/content.
 - [ ] Complete controlled same-model `closed_book` vs `exa_assisted` under matched concise-v2 settings.
 - [ ] Adjudicate mention versus recommendation, ranking and technical correctness; track older MolSysMT versions.

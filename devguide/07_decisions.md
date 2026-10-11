@@ -22,6 +22,7 @@ This file preserves why the Observatory works as it does. Add dated decisions ra
 | 2026-10-10 | Version the closed-book explicit-name matching rule separately | Recompute only the text occurrence in complete STOP answers, preserving truncation/error/unattempted states as missing. Do not turn this automated mention check into a recommendation or accuracy judgment. |
 | 2026-10-10 | Freeze V2 as a separate 48-prompt, four-stratum corpus | Broaden five documented use-case families with paired formulations, six unrelated controls and six each named-alternative and Spanish variants. Fixed order and exact bytes preserve repeatability; report each stratum and provider track separately. This is a protocol artifact, not a live result or authorization to spend quota. |
 | 2026-10-11 | Prepare V2 segments without activating live workflows | Use a fixed 20/20/8 plan, exact corpus SHA-256 in new captures, an explicit V2 CLI switch and manifest checks for contiguous IDs. Keep Actions on V1 and reject V2 in the old pooled web renderer until stratum-aware analysis and rights review are complete. |
+| 2026-10-11 | Analyze V2 strata only from compatible, local captures | Reuse exact-byte manifests and conflict checks, report web URL presence or model name occurrence by stratum and paired intent, and retain missingness. Keep the derivative internal; no automatic recommendation or publication claim. |
 
 ## Future decision candidates
 

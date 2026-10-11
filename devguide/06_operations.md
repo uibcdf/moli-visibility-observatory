@@ -26,7 +26,15 @@ Preview the exact V2 collection order and three bounded segments without credent
 python -m visibility_observatory.benchmark_run
 ```
 
-The plan lists `(start_index, count)` as `(0, 20)`, `(20, 20)` and `(40, 8)`, each with original query IDs and the frozen file hash. The Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs accept `--benchmark-version v2` and the relevant start/count arguments, but refuse V2 without `--execute-v2`. This switch only prevents accidental local invocation; the owner must still approve a bounded live plan after checking the applicable account terms, quotas and retention rights. Existing manual Actions workflows remain V1 and have no V2 option. Do not feed V2 captures into the existing web metric renderer: it rejects them until separate-stratum analysis exists.
+The plan lists `(start_index, count)` as `(0, 20)`, `(20, 20)` and `(40, 8)`, each with original query IDs and the frozen file hash. The Tavily/Exa, checkpointed Gemini and Exa-assisted CLIs accept `--benchmark-version v2` and the relevant start/count arguments, but refuse V2 without `--execute-v2`. This switch only prevents accidental local invocation; the owner must still approve a bounded live plan after checking the applicable account terms, quotas and retention rights. Existing manual Actions workflows remain V1 and have no V2 option. Do not feed V2 captures into the existing web metric renderer: it rejects pooled V2 scoring.
+
+Once source retention is permitted, an **offline, internal** V2 analysis of already-local captures from one compatible provider/mode can be written with:
+
+```bash
+python -m visibility_observatory.v2_analysis --run /path/to/segment-1.json --run /path/to/segment-2.json --run /path/to/segment-3.json --output /tmp/moli-v2-internal.json
+```
+
+The command makes no provider requests. It rejects conflicting complete attempts or mixed tracks/settings, leaves missing observations unevaluable, and reports each stratum and paired comparison separately. For model output it counts only explicit name occurrences; recommendation quality and technical correctness need human review. The report is marked `internal_unreviewed`, omits source URLs and answers, and must not be fed to Pages or published before rights and scientific review.
 
 An offline manifest can be generated and checked with the synthetic fixture; this does not query a provider or retain original answers:
 
